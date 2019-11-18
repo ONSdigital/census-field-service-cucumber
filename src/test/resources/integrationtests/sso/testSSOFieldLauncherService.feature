@@ -24,7 +24,7 @@ Feature: Test SSO to EQ using Field Launcher Service
 	@SetUpFieldServiceTests
   Scenario: Authentication of SSO
     Given I am a field officer and I have access to a device with SSO
-    And I click on the job {URL}⁠ in the chrome browser
+    And I click on the job URL⁠ in the chrome browser
     And a field proxy authentication UI is displayed on the screen
     When I enter my correct SSO credentials and click OK
     Then the EQ launch event is triggered
