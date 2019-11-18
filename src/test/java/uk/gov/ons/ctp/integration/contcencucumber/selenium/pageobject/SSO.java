@@ -13,33 +13,63 @@ import org.openqa.selenium.support.PageFactory;
 @AllArgsConstructor
 public class SSO {
 
-  private WebDriver driver;
+	private WebDriver driver;
 
-  public SSO(WebDriver driver) {
-    this.driver = driver;
-    PageFactory.initElements(driver, this);
-  }
+	public SSO(WebDriver driver) {
+		this.driver = driver;
+		PageFactory.initElements(driver, this);
+	}
 
-//  @FindBy(css = "#uac")
-//  private WebElement uacTextBox;
-  
-  @FindBy(xpath = "/html/body/div/div[2]/div[1]/h2")
-  private WebElement ssoTitle;
-  
-  public String getSSOTitleText() {
-	  return ssoTitle.getText();
-  }
-  
-//  public void clickUacBox() {
-//    uacTextBox.click();
-//  }
-//  
-//  public void addTextToUac(String txtToAdd) {
-//    uacTextBox.sendKeys(txtToAdd);
-//  }
-//
-//  public void enterUac(String uac) {
-//    clickUacBox();
-//    addTextToUac(uac);
-//  }
+	@FindBy(xpath = "/html/body/div/div[2]/div[1]/h2")
+	private WebElement ssoTitle;
+
+	@FindBy(css = "#Email")
+	private WebElement userIdBox;
+
+	@FindBy(css = "#next")
+	private WebElement nextButton;
+	
+	@FindBy(css = "#Passwd")
+	private WebElement passwordBox;
+
+	@FindBy(css = "#signIn")
+	private WebElement signInButton;
+	
+	public String getSSOTitleText() {
+		return ssoTitle.getText();
+	}
+
+	public void clickUserIdBox() {
+		userIdBox.click();
+	}
+
+	public void addTextToUserId(String txtToAdd) {
+		userIdBox.sendKeys(txtToAdd);
+	}
+
+	public void enterUserId(String userId) {
+		clickUserIdBox();
+		addTextToUserId(userId);
+	}
+	
+	public void clickNextButton() {
+		nextButton.click();
+	}
+	
+	public void clickPasswordBox() {
+		passwordBox.click();
+	}
+
+	public void addTextToPasswordBox(String txtToAdd) {
+		passwordBox.sendKeys(txtToAdd);
+	}
+
+	public void enterPassword(String password) {
+		clickPasswordBox();
+		addTextToPasswordBox(password);
+	}
+	
+	public void clickSignInButton() {
+		signInButton.click();
+	}
 }

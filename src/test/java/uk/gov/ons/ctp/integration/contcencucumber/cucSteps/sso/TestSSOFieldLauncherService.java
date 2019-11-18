@@ -24,7 +24,11 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 	private WebDriver driver = null;
 	private String baseUrl;
 	private SSO sso = null;
-
+//	private String userId = "cucumber_test@test.field.census.gov.uk";
+//	private String pw = "Furniture1fireworks9fruit";
+	private String userId = "pb@test.field.census.gov.uk";
+	private String pw = "Robotron11";
+	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
 		setupOSWebdriver();
@@ -56,6 +60,15 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
     	String titleText = sso.getSSOTitleText();
     	log.with(titleText).debug("The SSO title text found");
     	assertEquals("SSO title has incorrect text", "Sign in with your Google Account", titleText);
+    }
+    
+    @When("I enter my correct SSO credentials and click OK")
+    public void i_enter_my_correct_SSO_credentials_and_click_OK() {
+    	log.with(userId).debug("The user id for the SSO");
+        sso.enterUserId(userId);
+        sso.clickNextButton();
+        sso.enterPassword(pw);
+        sso.clickSignInButton();
     }
     
     private void setupOSWebdriver() {
