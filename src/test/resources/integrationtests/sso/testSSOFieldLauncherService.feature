@@ -24,22 +24,22 @@ Feature: Test SSO to EQ using Field Launcher Service
 	@SetUpFieldServiceTests
   Scenario: Authentication of SSO
     Given I am a field officer and I have access to a device with SSO
-    When I click on the job {URL}⁠ in the chrome browser
-    Then a field proxy authentication UI is displayed on the screen
-    Given I enter my correct SSO credentials and click OK
-    When the EQ launch event is triggered
-    Then I can view the CCS EQ Survey questions
-
-  Scenario: Display message to the field officer when the response has already submitted
-		Given that the response to a CCS interview job has already been submitted
-		When I click on the job url in my device
-		Then a {message}⁠ is displayed to me
-		And an option to go back to main menu
-		
-	Scenario: Display a message to field officer for a Save and Resume journey
-		Given I am conducting the CCS Interview
-		And for some reason I have to stop my CCS Interview before completion
-		When I click on the Save and Continue button on EQ CCS Survey
-		Then I am presented with a {message}⁠ and link to launch saved EQ
+    And I click on the job {URL}⁠ in the chrome browser
+    And a field proxy authentication UI is displayed on the screen
+    When I enter my correct SSO credentials and click OK
+    Then the EQ launch event is triggered
+    
+  #@SetUpFieldServiceTests
+  #Scenario: Display message to the field officer when the response has already submitted
+#		Given that the response to a CCS interview job has already been submitted
+#		When I click on the job url in my device
+#		Then the completion message "The CCS Questionnaire has been completed." is displayed to me
+#		
+#	@SetUpFieldServiceTests
+#	Scenario: Field Officer is already authenticated
+#		Given I have already entered my credentials for SSO
+#		When I click on the CCS link on my TotoMobile app
+#		Then I am not presented with the SSO screen to enter my credentials
+#		And the EQ launch event is triggered
 		
 		
