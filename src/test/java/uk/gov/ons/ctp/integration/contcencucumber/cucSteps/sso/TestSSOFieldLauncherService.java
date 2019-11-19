@@ -12,6 +12,8 @@ import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
+
+import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -31,15 +33,17 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 //	private String pw = "Furniture1fireworks9fruit";
 	private String userId = "pb@test.field.census.gov.uk";
 	private String pw = "Robotron11";
-	private String errorMessageContainingCallToEQ = null;
-	private CensusQuestionnaire censusQuestionnairePage;
 	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
 		setupOSWebdriver();
 		setupDriverURL();
 		sso = new SSO(driver);
-		censusQuestionnairePage = new CensusQuestionnaire(driver);
+	}
+    
+    @After("@TearDown")
+	public void deleteDriver() {
+		driver.close();
 	}
     
     @Given("I am a field officer and I have access to a device with SSO")
@@ -87,17 +91,14 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 			e.printStackTrace();
 		}
     	
-    	String currentURL = driver.getCurrentUrl();
-    	
-    	System.out.println("The current URL is now: " + currentURL);    	
+    	String currentURL = driver.getCurrentUrl();	
     	
 		log.with(currentURL).info("The current URL to check");
 		log.info(
 				"We need to assert that it tried to open the EQ page but that page does not exist i.e. that the current URL contains the following text: //session/%3Ftoken");
-		String devTextToFind = "/session/%3Ftoken";
-		String localTextToFind = "/session%3Ftoken";
-//		assertTrue(currentURL.contains(devTextToFind) || currentURL.contains(localTextToFind));
-		assertTrue(currentURL.contains("session"));
+		String devTextToFind = "/session/?token";
+		String localTextToFind = "/session?token";
+		assertTrue(currentURL.contains(devTextToFind) || currentURL.contains(localTextToFind));
     }
     
     private void setupOSWebdriver() {

@@ -21,7 +21,7 @@ Feature: Test SSO to EQ using Field Launcher Service
       #| "EX4 1EH" |
       #| "EX41EH"  |
 
-	@SetUpFieldServiceTests
+	@SetUpFieldServiceTests @TearDown
   Scenario: Authentication of SSO
     Given I am a field officer and I have access to a device with SSO
     And I click on the job URL⁠ in the chrome browser
