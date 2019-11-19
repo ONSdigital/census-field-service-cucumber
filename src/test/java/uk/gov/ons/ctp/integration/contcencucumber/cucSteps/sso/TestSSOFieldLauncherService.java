@@ -1,10 +1,12 @@
 package uk.gov.ons.ctp.integration.contcencucumber.cucSteps.sso;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
@@ -16,6 +18,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.integration.contcencucumber.cucSteps.TestEndpoints;
+import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.CensusQuestionnaire;
 import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.SSO;
 
 public class TestSSOFieldLauncherService extends TestEndpoints {
@@ -28,12 +31,15 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 //	private String pw = "Furniture1fireworks9fruit";
 	private String userId = "pb@test.field.census.gov.uk";
 	private String pw = "Robotron11";
+	private String errorMessageContainingCallToEQ = null;
+	private CensusQuestionnaire censusQuestionnairePage;
 	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
 		setupOSWebdriver();
 		setupDriverURL();
 		sso = new SSO(driver);
+		censusQuestionnairePage = new CensusQuestionnaire(driver);
 	}
     
     @Given("I am a field officer and I have access to a device with SSO")
@@ -69,6 +75,29 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
         sso.clickNextButton();
         sso.enterPassword(pw);
         sso.clickSignInButton();
+    }
+    
+    @Then("the EQ launch event is triggered")
+    public void the_EQ_launch_event_is_triggered() {
+    	
+    	try {
+			log.info("Sleep for 5 seconds to give it time to attempt to load EQ");
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	String currentURL = driver.getCurrentUrl();
+    	
+    	System.out.println("The current URL is now: " + currentURL);    	
+    	
+		log.with(currentURL).info("The current URL to check");
+		log.info(
+				"We need to assert that it tried to open the EQ page but that page does not exist i.e. that the current URL contains the following text: //session/%3Ftoken");
+		String devTextToFind = "/session/%3Ftoken";
+		String localTextToFind = "/session%3Ftoken";
+//		assertTrue(currentURL.contains(devTextToFind) || currentURL.contains(localTextToFind));
+		assertTrue(currentURL.contains("session"));
     }
     
     private void setupOSWebdriver() {
