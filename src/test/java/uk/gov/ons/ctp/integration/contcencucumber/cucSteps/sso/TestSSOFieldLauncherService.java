@@ -1,9 +1,12 @@
 package uk.gov.ons.ctp.integration.contcencucumber.cucSteps.sso;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -24,6 +27,7 @@ import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.integration.contcencucumber.cucSteps.TestEndpoints;
 import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.QuestionnaireCompleted;
 import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.SSO;
+import org.openqa.selenium.NoSuchElementException;
 
 public class TestSSOFieldLauncherService extends TestEndpoints {
 
@@ -49,6 +53,34 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
     
     @After("@TearDown")
 	public void deleteDriver() {
+		driver.close();
+	}
+    
+    @After("@TearDownMultiWindows")
+	public void deleteDriverRH2() throws InterruptedException {
+		String mainWindow = driver.getWindowHandle();
+
+		// To handle all new opened windows.
+		Set<String> s1 = driver.getWindowHandles();
+		Iterator<String> i1 = s1.iterator();
+
+		while (i1.hasNext()) {
+			String childWindow = i1.next();
+
+			if (!mainWindow.equalsIgnoreCase(childWindow)) {
+
+				// Switching to Child window
+				driver.switchTo().window(childWindow);
+				Thread.sleep(5000);
+
+				// Closing the Child Window.
+				driver.close();
+			}
+		}
+		// Switching to Parent window i.e Main Window.
+		driver.switchTo().window(mainWindow);
+
+		// Closing the Parent Window.
 		driver.close();
 	}
     
@@ -149,11 +181,6 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
     	jse.executeScript("window.open()");
     	ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
     	driver.switchTo().window(tabs.get(1));
-
-//    	// Switch to new window opened
-//    	for(String winHandle : driver.getWindowHandles()){
-//    	    driver.switchTo().window(winHandle);
-//    	}
     	
     	try {
 			log.info("Sleep for 5 seconds to give the new tab time to appear");
@@ -163,6 +190,27 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 		}
     	
         driver.get(baseUrl);
+    }
+    
+    @Then("I am not presented with the SSO screen to enter my credentials")
+    public void i_am_not_presented_with_the_SSO_screen_to_enter_my_credentials() {
+        
+    	try {
+			log.info("Sleep for 5 seconds to give the SSO page time to appear");
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+ 
+    	String titleText = "";
+		try {
+			titleText = sso.getSSOTitleText();
+		} catch (NoSuchElementException e) {
+			log.info("We are expecting that the SSO screen will not appear, therefore there should not be any SSO title element found");
+		}
+		
+    	log.with(titleText).debug("The SSO title text if found");
+    	assertNotEquals("SSO title should not have appeared", "Sign in with your Google Account", titleText);
     }
     
     private void setupOSWebdriver() {
