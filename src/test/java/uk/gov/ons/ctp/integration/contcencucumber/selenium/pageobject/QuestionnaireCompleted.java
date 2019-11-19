@@ -13,20 +13,20 @@ import org.openqa.selenium.support.PageFactory;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CensusQuestionnaire {
+public class QuestionnaireCompleted {
 
   private WebDriver driver;
 
-  public CensusQuestionnaire(WebDriver driver) {
+  public QuestionnaireCompleted(WebDriver driver) {
     this.driver = driver;
     PageFactory.initElements(driver, this);
   }
   
-  @FindBy(xpath = "/html/body/div/div/form/header/div[2]/div/div/div[1]/img")
-  private WebElement censusLogo;
+  @FindBy(xpath = "/html/body/h1[1]")
+  private WebElement ccsCompletedTitle;
   
-  public void clickCensusLogo() {
-    censusLogo.click();
+  public String getCCSCompletedTitleText() {
+	  return ccsCompletedTitle.getText();
   }
 
 }

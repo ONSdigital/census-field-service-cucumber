@@ -29,11 +29,12 @@ Feature: Test SSO to EQ using Field Launcher Service
     When I enter my correct SSO credentials and click OK
     Then the EQ launch event is triggered
     
-  #@SetUpFieldServiceTests
-  #Scenario: Display message to the field officer when the response has already submitted
-#		Given that the response to a CCS interview job has already been submitted
-#		When I click on the job url in my device
-#		Then the completion message "The CCS Questionnaire has been completed." is displayed to me
+  @SetUpFieldServiceTests @TearDown
+  Scenario: Display message to the field officer when the response has already submitted
+		Given that the response to a CCS interview job has already been submitted
+		And I click on the job URL⁠ in the chrome browser
+		When I enter my correct SSO credentials and click OK
+		Then the completion message "The CCS Questionnaire has been completed." is displayed to me
 #		
 #	@SetUpFieldServiceTests
 #	Scenario: Field Officer is already authenticated
