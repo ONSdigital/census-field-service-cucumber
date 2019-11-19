@@ -3,8 +3,10 @@ package uk.gov.ons.ctp.integration.contcencucumber.cucSteps.sso;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -118,6 +120,51 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
     	assertEquals("CCS Completion title has incorrect text", completionMessage, titleText);
     }
 
+    @Given("I have already entered my credentials for SSO")
+    public void i_have_already_entered_my_credentials_for_SSO() {
+    	log.with(baseUrl).debug("The job URL that was clicked on");
+    	driver.get(baseUrl);
+    	
+    	try {
+			log.info("Sleep for 5 seconds to give the SSO page time to appear");
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	log.with(userId).debug("Now entering my credentials for the SSO");
+        sso.enterUserId(userId);
+        sso.clickNextButton();
+        sso.enterPassword(pw);
+        sso.clickSignInButton();
+    }
+    
+    @When("I click on the job URL⁠ in the chrome browser in a new window")
+    public void i_click_on_the_job_URL⁠_in_the_chrome_browser_in_a_new_window() {
+    	// Store the current window handle
+    	String winHandleBefore = driver.getWindowHandle();
+
+    	// Perform the click operation that opens new window
+    	JavascriptExecutor jse = (JavascriptExecutor)driver;
+    	jse.executeScript("window.open()");
+    	ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+    	driver.switchTo().window(tabs.get(1));
+
+//    	// Switch to new window opened
+//    	for(String winHandle : driver.getWindowHandles()){
+//    	    driver.switchTo().window(winHandle);
+//    	}
+    	
+    	try {
+			log.info("Sleep for 5 seconds to give the new tab time to appear");
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+        driver.get(baseUrl);
+    }
+    
     private void setupOSWebdriver() {
 		String os = System.getProperty("os.name").toLowerCase();
 		if (os.contains("mac")) {
