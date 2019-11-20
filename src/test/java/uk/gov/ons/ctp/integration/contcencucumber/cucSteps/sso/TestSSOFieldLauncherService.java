@@ -25,6 +25,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.integration.contcencucumber.cucSteps.TestEndpoints;
+import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.QuestionnaireCompleted;
 import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.SSO;
 import org.openqa.selenium.NoSuchElementException;
@@ -42,6 +43,8 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 	private String completedDevUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
 	private String completedUrl = "https://localhost:8443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
 	private QuestionnaireCompleted questionnaireCompleted;
+	private String invalidCaseIdUrl = "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+	private InvalidCaseId invalidCaseId;
 	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
@@ -49,6 +52,7 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 		setupDriverURL();
 		sso = new SSO(driver);
 		questionnaireCompleted = new QuestionnaireCompleted(driver);
+		invalidCaseId = new InvalidCaseId(driver);
 	}
     
     @After("@TearDown")
@@ -211,6 +215,27 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 		
     	log.with(titleText).debug("The SSO title text if found");
     	assertNotEquals("SSO title should not have appeared", "Sign in with your Google Account", titleText);
+    }
+    
+    @Given("that the job URL contains an invalid case id")
+    public void that_the_job_URL_contains_an_invalid_case_id() {
+    	
+    	log.info("change the base URL to be one that contains an invalid case id");
+        baseUrl = invalidCaseIdUrl;
+    }
+    
+    @Then("the invalid case id message {string} is displayed to me")
+    public void the_invalid_case_id_message_is_displayed_to_me(String invalidCaseIdMessage) {
+    	
+    	try {
+			log.info("Sleep for 5 seconds to give the invalid case page time to appear");
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+    	
+    	String messageTextFound = invalidCaseId.getInvalidCaseIdText();
+    	assertEquals("Reason: Bad request - Case ID invalid", invalidCaseIdMessage, messageTextFound);
     }
     
     private void setupOSWebdriver() {
