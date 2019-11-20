@@ -267,14 +267,22 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 			invalidCaseIdUrl = "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
 			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
 			.debug("The runtime URLs are pointing to the LOCAL environment");
-		} else {
+		} else if (runtimeEnvironment.equals("DEV_LOCAL")){
 			userId = "cucumber_test@test.field.census.gov.uk";
 			pw = "Furniture1fireworks9fruit";
 			baseUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
 			completedUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
 			invalidCaseIdUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
 			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
-			.debug("The runtime URLs are pointing to the DEV environment");
+			.debug("The runtime URLs are pointing to the DEV environment locally");
+		} else {
+			userId = "cucumber_test@test.field.census.gov.uk";
+			pw = "Furniture1fireworks9fruit";
+			baseUrl = "https://35.244.221.21/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
+			completedUrl = "https://35.244.221.21/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
+			invalidCaseIdUrl = "https://35.244.221.21/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
+			.debug("The runtime URLs are pointing to the DEV environment from within GCP");
 		}
 		
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
