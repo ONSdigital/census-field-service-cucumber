@@ -3,7 +3,8 @@
 #Feature: Test SSO to EQ using Field Launcher Service
 #Scenario: Authentication of SSO
 #Scenario: Display message to the field officer when the response has already submitted
-#Scenario: Display a message to field officer for a Save and Resume journey
+#Scenario: Field Officer is already authenticated
+#Scenario: Display message to the field officer when the case id is invalid
 #
 #The following scenario is also covered by the scenario 'Authentication of SSO'
 #Scenario: Display SSO Authentication UI
