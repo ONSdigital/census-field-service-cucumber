@@ -36,20 +36,19 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 	private WebDriver driver = null;
 	private String baseUrl;
 	private SSO sso = null;
-//	private String userId = "cucumber_test@test.field.census.gov.uk";
-//	private String pw = "Furniture1fireworks9fruit";
-	private String userId = "pb@test.field.census.gov.uk";
-	private String pw = "Robotron11";
-	private String completedDevUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
-	private String completedUrl = "https://localhost:8443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
+	private String userId = null;
+	private String pw = null;
+	private String completedUrl = null;
 	private QuestionnaireCompleted questionnaireCompleted;
 	private String invalidCaseIdUrl = "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
 	private InvalidCaseId invalidCaseId;
+	private String runtimeEnvironment;
 	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
+    	runtimeEnvironment = System.getenv("RUNTIME_ENV");
 		setupOSWebdriver();
-		setupDriverURL();
+		setupDriverAndURLs();
 		sso = new SSO(driver);
 		questionnaireCompleted = new QuestionnaireCompleted(driver);
 		invalidCaseId = new InvalidCaseId(driver);
@@ -127,7 +126,7 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
     public void the_EQ_launch_event_is_triggered() {
     	
     	try {
-			log.info("Sleep for 5 seconds to give it time to attempt to load EQ");
+			log.info("Sleep for 10 seconds to give it time to attempt to load EQ (this can take quite a long time in DEV)");
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -250,14 +249,34 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 		}
 	}
     
-    private void setupDriverURL() {
+    private void setupDriverAndURLs() {
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
+		options.setHeadless(true);
 		options.setLogLevel(FirefoxDriverLogLevel.DEBUG);
 		driver = new FirefoxDriver(options);
-		String rhuiBaseUrl = System.getenv("RH_DEV_BASE_URL");
-		baseUrl = rhuiBaseUrl != null ? rhuiBaseUrl : "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
-		log.with(baseUrl).info("By default the base URL will point to the dev environment");
+		
+		if (runtimeEnvironment == null) {
+			runtimeEnvironment = "DEV";
+		}
+		
+		if (runtimeEnvironment.equals("LOCAL")) {
+			userId = "pb@test.field.census.gov.uk";
+			pw = "Robotron11";
+			baseUrl = "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
+			completedUrl = "https://localhost:8443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
+			invalidCaseIdUrl = "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
+			.debug("The runtime URLs are pointing to the LOCAL environment");
+		} else {
+			userId = "cucumber_test@test.field.census.gov.uk";
+			pw = "Furniture1fireworks9fruit";
+			baseUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
+			completedUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
+			invalidCaseIdUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
+			.debug("The runtime URLs are pointing to the DEV environment");
+		}
+		
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 
