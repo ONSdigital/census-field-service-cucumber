@@ -56,6 +56,17 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 	@Value("${local-settings.invalid-case-id-url}")
     protected String localInvalidCaseIdUrl;
 	
+	@Value("${dev-local-settings.username}")
+	private String devLocalUserId;
+	@Value("${dev-local-settings.password}")
+	private String devLocalPassword;
+	@Value("${dev-local-settings.base-url}")
+    protected String devLocalBaseUrl;
+	@Value("${dev-local-settings.completed-url}")
+    protected String devLocalCompletedUrl;
+	@Value("${dev-local-settings.invalid-case-id-url}")
+    protected String devLocalInvalidCaseIdUrl;
+	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
     	runtimeEnvironment = System.getenv("RUNTIME_ENV");
@@ -139,7 +150,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     	
     	try {
 			log.info("Sleep for 10 seconds to give it time to attempt to load EQ (this can take quite a long time in DEV)");
-			Thread.sleep(5000);
+			Thread.sleep(10000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -280,11 +291,16 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
 			.debug("The runtime URLs are pointing to the LOCAL environment");
 		} else if (runtimeEnvironment.equals("DEV_LOCAL")){
-			userId = "cucumber_test@test.field.census.gov.uk";
-			pw = "Furniture1fireworks9fruit";
-			baseUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
-			completedUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
-			invalidCaseIdUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+//			userId = "cucumber_test@test.field.census.gov.uk";
+//			pw = "Furniture1fireworks9fruit";
+//			baseUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
+//			completedUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
+//			invalidCaseIdUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+			userId = devLocalUserId;
+			pw = devLocalPassword;
+			baseUrl = devLocalBaseUrl;
+			completedUrl = devLocalCompletedUrl;
+			invalidCaseIdUrl = devLocalInvalidCaseIdUrl;
 			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
 			.debug("The runtime URLs are pointing to the DEV environment locally");
 		} else {
