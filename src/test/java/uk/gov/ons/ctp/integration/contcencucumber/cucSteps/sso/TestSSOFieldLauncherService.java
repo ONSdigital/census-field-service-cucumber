@@ -10,11 +10,13 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.springframework.beans.factory.annotation.Value;
+
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
 
@@ -24,13 +26,12 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import uk.gov.ons.ctp.common.error.CTPException;
-import uk.gov.ons.ctp.integration.contcencucumber.cucSteps.TestEndpoints;
+import uk.gov.ons.ctp.integration.contcencucumber.main.SpringIntegrationTest;
 import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.QuestionnaireCompleted;
 import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.SSO;
-import org.openqa.selenium.NoSuchElementException;
 
-public class TestSSOFieldLauncherService extends TestEndpoints {
+public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 
 	private static final Logger log = LoggerFactory.getLogger(TestSSOFieldLauncherService.class);
 	private WebDriver driver = null;
@@ -40,9 +41,20 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 	private String pw = null;
 	private String completedUrl = null;
 	private QuestionnaireCompleted questionnaireCompleted;
-	private String invalidCaseIdUrl = "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+	private String invalidCaseIdUrl = null;
 	private InvalidCaseId invalidCaseId;
 	private String runtimeEnvironment;
+	
+	@Value("${local-settings.username}")
+	private String localUserId;
+	@Value("${local-settings.password}")
+	private String localPassword;
+	@Value("${local-settings.base-url}")
+    protected String localBaseUrl;
+	@Value("${local-settings.completed-url}")
+    protected String localCompletedUrl;
+	@Value("${local-settings.invalid-case-id-url}")
+    protected String localInvalidCaseIdUrl;
 	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
@@ -260,11 +272,11 @@ public class TestSSOFieldLauncherService extends TestEndpoints {
 		}
 		
 		if (runtimeEnvironment.equals("LOCAL")) {
-			userId = "pb@test.field.census.gov.uk";
-			pw = "Robotron11";
-			baseUrl = "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
-			completedUrl = "https://localhost:8443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
-			invalidCaseIdUrl = "https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+			userId = localUserId;
+			pw = localPassword;
+			baseUrl = localBaseUrl;
+			completedUrl = localCompletedUrl;
+			invalidCaseIdUrl = localInvalidCaseIdUrl;
 			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
 			.debug("The runtime URLs are pointing to the LOCAL environment");
 		} else if (runtimeEnvironment.equals("DEV_LOCAL")){
