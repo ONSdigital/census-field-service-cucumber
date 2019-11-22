@@ -35,15 +35,15 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 
 	private static final Logger log = LoggerFactory.getLogger(TestSSOFieldLauncherService.class);
 	private WebDriver driver = null;
-	private String baseUrl;
+	private String baseUrl = null;
 	private SSO sso = null;
 	private String userId = null;
 	private String pw = null;
 	private String completedUrl = null;
-	private QuestionnaireCompleted questionnaireCompleted;
+	private QuestionnaireCompleted questionnaireCompleted = null;
 	private String invalidCaseIdUrl = null;
-	private InvalidCaseId invalidCaseId;
-	private String runtimeEnvironment;
+	private InvalidCaseId invalidCaseId = null;
+	private String runtimeEnvironment = null;
 	
 	@Value("${local-settings.username}")
 	private String localUserId;
@@ -66,6 +66,17 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     protected String devLocalCompletedUrl;
 	@Value("${dev-local-settings.invalid-case-id-url}")
     protected String devLocalInvalidCaseIdUrl;
+	
+	@Value("${dev-settings.username}")
+	private String devUserId;
+	@Value("${dev-settings.password}")
+	private String devPassword;
+	@Value("${dev-settings.base-url}")
+    protected String devBaseUrl;
+	@Value("${dev-settings.completed-url}")
+    protected String devCompletedUrl;
+	@Value("${dev-settings.invalid-case-id-url}")
+    protected String devInvalidCaseIdUrl;
 	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
@@ -291,11 +302,6 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
 			.debug("The runtime URLs are pointing to the LOCAL environment");
 		} else if (runtimeEnvironment.equals("DEV_LOCAL")){
-//			userId = "cucumber_test@test.field.census.gov.uk";
-//			pw = "Furniture1fireworks9fruit";
-//			baseUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
-//			completedUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
-//			invalidCaseIdUrl = "https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
 			userId = devLocalUserId;
 			pw = devLocalPassword;
 			baseUrl = devLocalBaseUrl;
@@ -304,11 +310,11 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
 			.debug("The runtime URLs are pointing to the DEV environment locally");
 		} else {
-			userId = "cucumber_test@test.field.census.gov.uk";
-			pw = "Furniture1fireworks9fruit";
-			baseUrl = "https://35.244.221.21/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
-			completedUrl = "https://35.244.221.21/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
-			invalidCaseIdUrl = "https://35.244.221.21/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+			userId = devUserId;
+			pw = devPassword;
+			baseUrl = devBaseUrl;
+			completedUrl = devCompletedUrl;
+			invalidCaseIdUrl = devInvalidCaseIdUrl;
 			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
 			.debug("The runtime URLs are pointing to the DEV environment from within GCP");
 		}
