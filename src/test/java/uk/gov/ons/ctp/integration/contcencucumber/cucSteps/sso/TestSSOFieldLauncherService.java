@@ -3,6 +3,7 @@ package uk.gov.ons.ctp.integration.contcencucumber.cucSteps.sso;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -210,8 +211,6 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     
     @When("I click on the job URL⁠ in the chrome browser in a new window")
     public void i_click_on_the_job_URL⁠_in_the_chrome_browser_in_a_new_window() {
-    	// Store the current window handle
-    	String winHandleBefore = driver.getWindowHandle();
 
     	// Perform the click operation that opens new window
     	JavascriptExecutor jse = (JavascriptExecutor)driver;
@@ -239,15 +238,13 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 			e.printStackTrace();
 		}
  
-    	String titleText = "";
 		try {
-			titleText = sso.getSSOTitleText();
+			sso.getSSOTitleText();
+			fail();
 		} catch (NoSuchElementException e) {
 			log.info("We are expecting that the SSO screen will not appear, therefore there should not be any SSO title element found");
 		}
 		
-    	log.with(titleText).debug("The SSO title text if found");
-    	assertNotEquals("SSO title should not have appeared", "Sign in with your Google Account", titleText);
     }
     
     @Given("that the job URL contains an invalid case id")
@@ -286,6 +283,15 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     private void setupDriverAndURLs() {
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(true);
+		String os = System.getProperty("os.name").toLowerCase();
+		/**
+		 * This if statement was added because the latest stable version of firefox gets installed as
+		 *"/usr/bin/firefox-esr" and then a symbolic link for it, named firefox, is created in the same 
+		 *location - see the Dockerfile.
+		 */
+		if (os.contains("linux")) {
+   		  options.setBinary("/usr/bin/firefox"); 
+		}
 		options.setLogLevel(FirefoxDriverLogLevel.DEBUG);
 		driver = new FirefoxDriver(options);
 		

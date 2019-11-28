@@ -13,9 +13,11 @@ RUN groupadd -g 985 rhsvc && \
 
 ENV M2_HOME=/home/rhsvc/.m2
 RUN mkdir -p /home/rhsvc/.m2/repository
+RUN ln -s /usr/bin/firefox-esr /usr/bin/firefox
 COPY . /home/rhsvc/census-field-service-cucumber
 RUN chown -R rhsvc:rhsvc /home/rhsvc/census-field-service-cucumber
 COPY .maven.settings.xml /home/rhsvc/.m2/settings.xml
 WORKDIR /home/rhsvc/census-field-service-cucumber
 USER rhsvc
+
 CMD [ "mvn", "verify", "-Dmaven.repo.local=m2/repository"]
