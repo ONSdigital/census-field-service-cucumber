@@ -189,25 +189,6 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     	String titleText = questionnaireCompleted.getCCSCompletedTitleText();
     	assertEquals("CCS Completion title has incorrect text", completionMessage, titleText);
     }
-
-    @Given("I have already entered my credentials for SSO")
-    public void i_have_already_entered_my_credentials_for_SSO() {
-    	log.with(baseUrl).debug("The job URL that was clicked on");
-    	driver.get(baseUrl);
-    	
-    	try {
-			log.info("Sleep for 5 seconds to give the SSO page time to appear");
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-    	
-    	log.with(userId).debug("Now entering my credentials for the SSO");
-        sso.enterUserId(userId);
-        sso.clickNextButton();
-        sso.enterPassword(pw);
-        sso.clickSignInButton();
-    }
     
     @When("I click on the job URL⁠ in the chrome browser in a new window")
     public void i_click_on_the_job_URL⁠_in_the_chrome_browser_in_a_new_window() {
@@ -282,7 +263,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     
     private void setupDriverAndURLs() {
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(true);
+		options.setHeadless(false);
 		String os = System.getProperty("os.name").toLowerCase();
 		/**
 		 * This if statement was added because the latest stable version of firefox gets installed as
