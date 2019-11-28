@@ -35,6 +35,7 @@ import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.SSO;
 public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 
 	private static final Logger log = LoggerFactory.getLogger(TestSSOFieldLauncherService.class);
+	private static final boolean headless = true;
 	private WebDriver driver = null;
 	private String baseUrl = null;
 	private SSO sso = null;
@@ -263,7 +264,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     
     private void setupDriverAndURLs() {
 		FirefoxOptions options = new FirefoxOptions();
-		options.setHeadless(false);
+		options.setHeadless(headless);
 		String os = System.getProperty("os.name").toLowerCase();
 		/**
 		 * This if statement was added because the latest stable version of firefox gets installed as
@@ -306,7 +307,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 			.debug("The runtime URLs are pointing to the DEV environment from within GCP");
 		}
 		
-		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	}
 
 }
