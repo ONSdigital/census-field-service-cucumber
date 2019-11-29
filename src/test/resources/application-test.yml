@@ -1,0 +1,38 @@
+info:
+  name: ${project.artifactId}
+  version: ${project.version}
+  origin: ${scm.url}
+  commit: ${buildNumber}
+  branch: ${scmBranch}
+  built: ${timestamp}
+
+# logging config here as a reminder as to how to override logback from cmd line
+# ie -Dlogging.level.org.springframework=DEBUG
+logging:
+  level:
+    root: WARN
+    uk.gov.ons.ctp: WARN
+    org.springframework: ERROR
+  profile: DEV
+  useJson: false
+
+local-settings:
+  username: pb@test.field.census.gov.uk
+  password: Robotron11
+  base-url: https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac
+  completed-url: https://localhost:8443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09
+  invalid-case-id-url: https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz
+
+dev-local-settings:
+  username: cucumber_test@test.field.census.gov.uk
+  password: Furniture1fireworks9fruit
+  base-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac
+  completed-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09
+  invalid-case-id-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz
+  
+dev-settings:
+  username: cucumber_test@test.field.census.gov.uk
+  password: Furniture1fireworks9fruit
+  base-url: https://35.244.221.21/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac
+  completed-url: https://35.244.221.21/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09
+  invalid-case-id-url: https://35.244.221.21/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz

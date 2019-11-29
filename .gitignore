@@ -1,0 +1,13 @@
+.classpath
+.factorypath
+.project
+.settings
+.idea
+.idea/**
+*.iml
+.DS_Store
+target
+target/**
+src/test/java/uk/gov/ons/ctp/integration/rhcucumber/DevelopTestRunner.java
+*.prefs
+build
