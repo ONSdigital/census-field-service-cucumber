@@ -3,21 +3,21 @@ Cucumber acceptance tests for the Census Integration teams Field Service
 
 The Cucumber acceptance tests, for the Field Service, have been designed to be run in one of three possible ways, which I have called 'LOCAL', 'DEV_LOCAL', or 'DEV'. These are defined as follows:
 
-LOCAL - This mean running the Field Service acceptance tests in your local environment and using the following URLs for the tests:
+LOCAL - This means running the Field Service acceptance tests in your local environment and using the following URLs for the tests:
 
 ```
 base-url: https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac
 completed-url: https://localhost:8443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09
 invalid-case-id-url: https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz
 ```
-DEV_LOCAL - This mean running the Field Service acceptance tests in the census-fwmt-gateway-dev environment but from outside GCP i.e. using the following URLs for the tests:
+DEV_LOCAL - This means running the Field Service acceptance tests in the census-fwmt-gateway-dev environment but from outside GCP i.e. using the following URLs for the tests:
 
 ```
 base-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac
 completed-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09
 invalid-case-id-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz
 ```
-DEV - This mean running the Field Service acceptance tests in the census-fwmt-gateway-dev environment from inside GCP i.e. using the following URLs for the tests:
+DEV - This means running the Field Service acceptance tests in the census-fwmt-gateway-dev environment from inside GCP i.e. using the following URLs for the tests:
 
 ```
 base-url: https://35.244.221.21/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac
