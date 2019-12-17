@@ -37,52 +37,23 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 	private static final Logger log = LoggerFactory.getLogger(TestSSOFieldLauncherService.class);
 	private static final boolean headless = true;
 	private WebDriver driver = null;
-	private String baseUrl = null;
 	private SSO sso = null;
-	private String userId = null;
-	private String pw = null;
-	private String completedUrl = null;
 	private QuestionnaireCompleted questionnaireCompleted = null;
-	private String invalidCaseIdUrl = null;
 	private InvalidCaseId invalidCaseId = null;
-	private String runtimeEnvironment = null;
 	
-	@Value("${local-settings.username}")
-	private String localUserId;
-	@Value("${local-settings.password}")
-	private String localPassword;
-	@Value("${local-settings.base-url}")
-    protected String localBaseUrl;
-	@Value("${local-settings.completed-url}")
-    protected String localCompletedUrl;
-	@Value("${local-settings.invalid-case-id-url}")
-    protected String localInvalidCaseIdUrl;
-	
-	@Value("${dev-local-settings.username}")
-	private String devLocalUserId;
-	@Value("${dev-local-settings.password}")
-	private String devLocalPassword;
-	@Value("${dev-local-settings.base-url}")
-    protected String devLocalBaseUrl;
-	@Value("${dev-local-settings.completed-url}")
-    protected String devLocalCompletedUrl;
-	@Value("${dev-local-settings.invalid-case-id-url}")
-    protected String devLocalInvalidCaseIdUrl;
-	
-	@Value("${dev-settings.username}")
-	private String devUserId;
-	@Value("${dev-settings.password}")
-	private String devPassword;
-	@Value("${dev-settings.base-url}")
-    protected String devBaseUrl;
-	@Value("${dev-settings.completed-url}")
-    protected String devCompletedUrl;
-	@Value("${dev-settings.invalid-case-id-url}")
-    protected String devInvalidCaseIdUrl;
+	@Value("${config.username}")
+	private String userId;
+	@Value("${config.password}")
+	private String pw;
+	@Value("${config.base-url}")
+	private String baseUrl;
+	@Value("${config.completed-url}")
+	private String completedUrl;
+	@Value("${config.invalid-case-id-url}")
+	private String invalidCaseIdUrl;
 	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
-    	runtimeEnvironment = System.getenv("RUNTIME_ENV");
 		setupOSWebdriver();
 		setupDriverAndURLs();
 		sso = new SSO(driver);
@@ -276,37 +247,6 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 		}
 		options.setLogLevel(FirefoxDriverLogLevel.DEBUG);
 		driver = new FirefoxDriver(options);
-		
-		if (runtimeEnvironment == null) {
-			runtimeEnvironment = "DEV";
-		}
-		
-		if (runtimeEnvironment.equals("LOCAL")) {
-			userId = localUserId;
-			pw = localPassword;
-			baseUrl = localBaseUrl;
-			completedUrl = localCompletedUrl;
-			invalidCaseIdUrl = localInvalidCaseIdUrl;
-			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
-			.debug("The runtime URLs are pointing to the LOCAL environment");
-		} else if (runtimeEnvironment.equals("DEV_LOCAL")){
-			userId = devLocalUserId;
-			pw = devLocalPassword;
-			baseUrl = devLocalBaseUrl;
-			completedUrl = devLocalCompletedUrl;
-			invalidCaseIdUrl = devLocalInvalidCaseIdUrl;
-			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
-			.debug("The runtime URLs are pointing to the DEV environment locally");
-		} else {
-			userId = devUserId;
-			pw = devPassword;
-			baseUrl = devBaseUrl;
-			completedUrl = devCompletedUrl;
-			invalidCaseIdUrl = devInvalidCaseIdUrl;
-			log.with(userId).with(pw).with(baseUrl).with(completedUrl).with(invalidCaseIdUrl)
-			.debug("The runtime URLs are pointing to the DEV environment from within GCP");
-		}
-		
 		driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 	}
 
