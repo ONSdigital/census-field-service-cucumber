@@ -8,14 +8,10 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 @ContextConfiguration(
-        classes = SpringIntegrationTest.class,
-        loader = SpringBootContextLoader.class,
-        initializers = ConfigFileApplicationContextInitializer.class)
+    classes = SpringIntegrationTest.class,
+    loader = SpringBootContextLoader.class,
+    initializers = ConfigFileApplicationContextInitializer.class)
 @WebAppConfiguration
 @SpringBootTest
 @ActiveProfiles("test")
-public class SpringIntegrationTest {
-
-}
-
-
+public class SpringIntegrationTest {}
