@@ -47,10 +47,12 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 	private String pw;
 	@Value("${config.base-url}")
 	private String baseUrl;
-	@Value("${config.completed-url}")
-	private String completedUrl;
-	@Value("${config.invalid-case-id-url}")
-	private String invalidCaseIdUrl;
+	private String accessEqPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
+	private String accessEqUrl = null;
+	private String completedPath = "/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
+	private String completedUrl = null;
+	private String invalidCaseIdPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+	private String invalidCaseIdUrl = null;
 	
     @Before("@SetUpFieldServiceTests")
 	public void setup() throws CTPException {
@@ -59,6 +61,9 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 		sso = new SSO(driver);
 		questionnaireCompleted = new QuestionnaireCompleted(driver);
 		invalidCaseId = new InvalidCaseId(driver);
+		accessEqUrl = baseUrl + accessEqPath;
+		completedUrl = baseUrl + completedPath;
+		invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
 	}
     
     @After("@TearDown")
@@ -101,8 +106,8 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     
     @Given("I click on the job URL⁠ in the chrome browser")
     public void i_click_on_the_job_URL⁠_in_the_chrome_browser() {
-    	log.with(baseUrl).debug("The job URL that was clicked on");
-    	driver.get(baseUrl);
+    	log.with(accessEqUrl).debug("The job URL that was clicked on");
+    	driver.get(accessEqUrl);
     }
     
     @Given("a field proxy authentication UI is displayed on the screen")
@@ -152,7 +157,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     @Given("that the response to a CCS interview job has already been submitted")
     public void that_the_response_to_a_CCS_interview_job_has_already_been_submitted() {
         log.info("change the base URL to be one for an interview that has already been submitted");
-        baseUrl = completedUrl;
+        accessEqUrl = completedUrl;
     }
     
     @Then("the completion message {string} is displayed to me")
@@ -178,7 +183,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 			e.printStackTrace();
 		}
     	
-        driver.get(baseUrl);
+        driver.get(accessEqUrl);
     }
     
     @Then("I am not presented with the SSO screen to enter my credentials")
@@ -204,7 +209,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     public void that_the_job_URL_contains_an_invalid_case_id() {
     	
     	log.info("change the base URL to be one that contains an invalid case id");
-        baseUrl = invalidCaseIdUrl;
+    	accessEqUrl = invalidCaseIdUrl;
     }
     
     @Then("the invalid case id message {string} is displayed to me")
