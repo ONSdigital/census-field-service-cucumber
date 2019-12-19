@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.contcencucumber.cucSteps.sso;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -23,14 +23,14 @@ import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
-import uk.gov.ons.ctp.integration.contcencucumber.main.SpringIntegrationTest;
-import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.InvalidCaseId;
-import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.QuestionnaireCompleted;
-import uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject.SSO;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.SSO;
 
-public class TestSSOFieldLauncherService extends SpringIntegrationTest {
+public class TestSSOFieldService extends SpringIntegrationTest {
 
-  private static final Logger log = LoggerFactory.getLogger(TestSSOFieldLauncherService.class);
+  private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);
   private static final boolean headless = true;
   private WebDriver driver = null;
   private SSO sso = null;

@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.contcencucumber.main;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.main;
 
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootContextLoader;

@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.contcencucumber.selenium.pageobject;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,19 +11,19 @@ import org.openqa.selenium.support.PageFactory;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class InvalidCaseId {
+public class QuestionnaireCompleted {
 
   private WebDriver driver;
 
-  public InvalidCaseId(WebDriver driver) {
+  public QuestionnaireCompleted(WebDriver driver) {
     this.driver = driver;
     PageFactory.initElements(driver, this);
   }
 
-  @FindBy(xpath = "/html/body/p[1]")
-  private WebElement invalidCaseIdMessage;
+  @FindBy(xpath = "/html/body/h1[1]")
+  private WebElement ccsCompletedTitle;
 
-  public String getInvalidCaseIdText() {
-    return invalidCaseIdMessage.getText();
+  public String getCCSCompletedTitleText() {
+    return ccsCompletedTitle.getText();
   }
 }
