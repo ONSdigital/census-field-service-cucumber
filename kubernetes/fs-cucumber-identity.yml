@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fs-cucumber-identity
+type: Opaque
+stringData:
+  username: freddy@hendrix.com
+  password: hilarious
