@@ -55,7 +55,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 	private String invalidCaseIdUrl = null;
 	
     @Before("@SetUpFieldServiceTests")
-	public void setup() throws CTPException {
+	public void setup() throws CTPException, InterruptedException {
 		setupOSWebdriver();
 		setupDriverAndURLs();
 		sso = new SSO(driver);
@@ -64,6 +64,7 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
 		accessEqUrl = baseUrl + accessEqPath;
 		completedUrl = baseUrl + completedPath;
 		invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
+//		closeAnyDriverWindowsCurrentlyOpen();
 	}
     
     @After("@TearDown")
@@ -73,6 +74,10 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
     
     @After("@TearDownMultiWindows")
 	public void deleteDriverRH2() throws InterruptedException {
+		closeAnyDriverWindowsCurrentlyOpen();
+	}
+
+	private void closeAnyDriverWindowsCurrentlyOpen() throws InterruptedException {
 		String mainWindow = driver.getWindowHandle();
 
 		// To handle all new opened windows.
@@ -104,11 +109,11 @@ public class TestSSOFieldLauncherService extends SpringIntegrationTest {
         log.debug("Nothing to do here: I am a field officer and I have access to a device with SSO");
     }
     
-    @Given("I click on the job URL⁠ in the chrome browser")
-    public void i_click_on_the_job_URL⁠_in_the_chrome_browser() {
-    	log.with(accessEqUrl).debug("The job URL that was clicked on");
+	@Given("I click on the job link in chrome")
+	public void i_click_on_the_job_link_in_chrome() {
+		log.with(accessEqUrl).debug("The job URL that was clicked on");
     	driver.get(accessEqUrl);
-    }
+	}
     
     @Given("a field proxy authentication UI is displayed on the screen")
     public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
