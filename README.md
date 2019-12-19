@@ -1,23 +1,11 @@
 # census-field-service-cucumber
 Cucumber acceptance tests for the Census Integration teams Field Service
 
-The Cucumber acceptance tests, for the Field Service, can be run locally in one of two possible ways, which are defined as follows:
-
-1. Run the Field Service acceptance tests locally using the following default URLs, which are set in the application.yml config section, for the tests:
+The Cucumber acceptance tests, for the Field Service, use the following default value for the base-url, which is set in the application.yml:
 
 ```
-base-url: https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac
-completed-url: https://localhost:8443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09
-invalid-case-id-url: https://localhost:8443/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz
+base-url: https://localhost:8443
 ```
-2. Run the Field Service acceptance tests in the census-fwmt-gateway-dev environment but from outside GCP. It means running locally but using the following URLs, which are set in the application-dev.yml config section, for the tests:
-
-```
-base-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac
-completed-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09
-invalid-case-id-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz
-```
-
 Before you can run all the cucumber features in this project the following steps need to be done:
 
 # When using a LOCAL runtime environment RabbitMQ must be running on port 35672.
@@ -58,9 +46,4 @@ Navigate to the census-field-service-cucumber repo, in a terminal, and enter eit
 mvn test
 
 mvn clean install
-```
-Or, to allow the settings in application-dev.yml to override those same ones in application.yml, enter the following command:
-
-```
-mvn verify -Dspring.profiles.active=dev
 ```
