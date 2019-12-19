@@ -13,5 +13,5 @@ import org.springframework.test.context.web.WebAppConfiguration;
     initializers = ConfigFileApplicationContextInitializer.class)
 @WebAppConfiguration
 @SpringBootTest
-@ActiveProfiles("test")
+
 public class SpringIntegrationTest {}

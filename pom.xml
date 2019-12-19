@@ -192,7 +192,7 @@
 				<directory>src/test/resources</directory>
 				<filtering>true</filtering>
 				<includes>
-					<include>**/application-test.yml</include>
+					<include>**/application*.yml</include>
 				</includes>
 			</resource>
 		</resources>
