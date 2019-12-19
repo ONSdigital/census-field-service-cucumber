@@ -1,7 +1,0 @@
-
-
-config:
-  username: cucumber_test@test.field.census.gov.uk
-  password: Furniture1fireworks9fruit
-  base-url: https://dev-fieldservice.fwmt-gateway.census-gcp.onsdigital.uk
-  

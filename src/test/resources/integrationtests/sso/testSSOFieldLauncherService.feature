@@ -31,7 +31,7 @@ Feature: Test SSO to EQ using Field Launcher Service
   Scenario: Field Officer is already authenticated
     Given I click on the job link in chrome
     And I enter my correct SSO credentials and click OK
-    When I click on the job URL⁠ in the chrome browser in a new window
+    When I click on the job link in chrome in a new window
     Then I am not presented with the SSO screen to enter my credentials
     And the EQ launch event is triggered
 
