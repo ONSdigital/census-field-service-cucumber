@@ -43,7 +43,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   @Value("${config.password}")
   private String pw;
 
-  @Value("${config.base-url}")
+  @Value("${config.baseurl}")
   private String baseUrl;
 
   private String accessEqPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";

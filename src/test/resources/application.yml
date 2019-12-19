@@ -19,4 +19,4 @@ logging:
 config:
   username: pb@test.field.census.gov.uk
   password: Robotron11
-  base-url: https://localhost:8443
+  baseurl: https://localhost:8443
