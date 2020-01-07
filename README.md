@@ -16,7 +16,14 @@ Go to the census-rh-service repo and enter this command:
 ```
 docker-compose up -d
 ```
-# The Mock Case API Service must also be running. 
+# Also, when using a LOCAL runtime environment, you need to set the password by exporting an environment variable named CONFIG_PASSWORD.
+
+Navigate to the census-field-service-cucumber repo, in a terminal, and enter this command (replacing <password> with the password):
+
+```
+export CONFIG_PASSWORD='<password>'
+```
+# The Mock Case API Service must be running. 
 
 Open the census-mock-case-api-service repo in Eclipse. Right click on the following file and choose 'Run As' --> 'Java Application':
 
