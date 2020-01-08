@@ -1,7 +1,6 @@
 FROM adoptopenjdk/maven-openjdk11:latest
 
 RUN apt-get update
-RUN apt-get -y --no-install-recommends install software-properties-common
 RUN apt-get update
 RUN add-apt-repository ppa:mozillateam/ppa
 RUN apt-get update
