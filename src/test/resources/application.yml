@@ -19,4 +19,4 @@ logging:
 config:
   username: fieldservice_test@test.field.census.gov.uk
   password: override_me_with_runtime_property
-  baseurl: https://localhost:8443
+  baseurl: https://localhost:443

@@ -5,7 +5,7 @@ Cucumber acceptance tests for the Census Integration teams Field Service
 The Cucumber acceptance tests, for the Field Service, use the following default value for the base-url, which is set in the application.yml:
 
 ```
-base-url: https://localhost:8443
+base-url: https://localhost:443
 ```
 Before you can run all the cucumber features in this project the following steps need to be done:
 
