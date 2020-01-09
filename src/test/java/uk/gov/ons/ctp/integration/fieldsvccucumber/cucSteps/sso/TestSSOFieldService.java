@@ -3,6 +3,7 @@ package uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
+
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
 import cucumber.api.java.After;
@@ -12,7 +13,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.JavascriptExecutor;
@@ -22,14 +22,9 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.ons.ctp.common.error.CTPException;
-import uk.gov.ons.ctp.integration.contactcentresvc.representation.FulfilmentDTO;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
@@ -69,7 +64,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     invalidCaseId = new InvalidCaseId(driver);
     accessEqUrl = baseUrl + accessEqPath;
     completedUrl = baseUrl + completedPath;
-    invalidCaseIdUrl = baseUrl + invalidCaseIdPath; 
+    invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
   }
 
   @After("@TearDown")
@@ -92,14 +87,14 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     try {
       HttpStatus fieldServiceStatus = checkFieldServiceRunning();
       log.with(fieldServiceStatus)
-          .info("Smoke Test: The response from https://localhost:443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09");
-//      assertEquals(
-//          "THE FIELD SERVICE MAY NOT BE RUNNING - it does not give a response code of 200",
-//          HttpStatus.OK,
-//          fieldServiceStatus);
+          .info(
+              "Smoke Test: The response from https://localhost:443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09");
+      //      assertEquals(
+      //          "THE FIELD SERVICE MAY NOT BE RUNNING - it does not give a response code of 200",
+      //          HttpStatus.OK,
+      //          fieldServiceStatus);
     } catch (ResourceAccessException e) {
-      log.error(
-          "THE FIELD SERVICE MAY NOT BE RUNNING: A ResourceAccessException has occurred.");
+      log.error("THE FIELD SERVICE MAY NOT BE RUNNING: A ResourceAccessException has occurred.");
       log.error(e.getMessage());
       fail();
       System.exit(0);
@@ -108,7 +103,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
       log.error(e.getMessage());
       fail();
       System.exit(0);
-    } 
+    }
   }
 
   @Given("I am a field officer and I have access to a device with SSO")
@@ -242,14 +237,14 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   private void setupOSWebdriver() {
     String os = System.getProperty("os.name").toLowerCase();
     if (os.contains("mac")) {
-      System.setProperty("webdriver.gecko.driver",
-          "src/test/resources/geckodriver/geckodriver.macos");
+      System.setProperty(
+          "webdriver.gecko.driver", "src/test/resources/geckodriver/geckodriver.macos");
     } else if (os.contains("linux")) {
-      System.setProperty("webdriver.gecko.driver",
-          "src/test/resources/geckodriver/geckodriver.linux");
+      System.setProperty(
+          "webdriver.gecko.driver", "src/test/resources/geckodriver/geckodriver.linux");
     } else {
-      System.err
-          .println("Unsupported platform - gecko driver not available for platform [" + os + "]");
+      System.err.println(
+          "Unsupported platform - gecko driver not available for platform [" + os + "]");
       System.exit(1);
     }
   }
@@ -297,25 +292,26 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     // Closing the Parent Window.
     driver.close();
   }
-  
+
   private HttpStatus checkFieldServiceRunning() {
     log.info(
         "Using the following endpoint to check that the field service is running: https://localhost:443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09");
-    
-//    completedUrl = baseUrl + completedPath;
-//    final UriComponentsBuilder builder =
-//        UriComponentsBuilder.fromHttpUrl(ccBaseUrl).port(ccBasePort).pathSegment("/fulfilments");
-//
-//    ResponseEntity<List<FulfilmentDTO>> fulfilmentResponse =
-//        getRestTemplate()
-//            .exchange(
-//                builder.build().encode().toUri(),
-//                HttpMethod.GET,
-//                null,
-//                new ParameterizedTypeReference<List<FulfilmentDTO>>() {});
-//
-//    return fulfilmentResponse.getStatusCode();
-    
+
+    //    completedUrl = baseUrl + completedPath;
+    //    final UriComponentsBuilder builder =
+    //
+    // UriComponentsBuilder.fromHttpUrl(ccBaseUrl).port(ccBasePort).pathSegment("/fulfilments");
+    //
+    //    ResponseEntity<List<FulfilmentDTO>> fulfilmentResponse =
+    //        getRestTemplate()
+    //            .exchange(
+    //                builder.build().encode().toUri(),
+    //                HttpMethod.GET,
+    //                null,
+    //                new ParameterizedTypeReference<List<FulfilmentDTO>>() {});
+    //
+    //    return fulfilmentResponse.getStatusCode();
+
     return null;
   }
 }
