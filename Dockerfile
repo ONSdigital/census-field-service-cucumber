@@ -19,4 +19,4 @@ COPY .maven.settings.xml /home/rhsvc/.m2/settings.xml
 WORKDIR /home/rhsvc/census-fs-cucumber
 USER rhsvc
 
-CMD [ "mvn", "install", "-Dmaven.repo.local=m2/repository -DskipTests"]
+CMD [ "mvn", "verify", "-Dmaven.repo.local=m2/repository"]
