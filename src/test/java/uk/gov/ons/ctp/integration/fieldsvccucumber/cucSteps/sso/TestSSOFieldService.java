@@ -123,7 +123,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-
+    log.info("*******1 HERE IS THE PAGE SOURCE BEGINNING********: " + driver.getPageSource());
+    log.info("*******1 HERE IS THE PAGE SOURCE END********");
     String titleText = sso.getSSOTitleText();
     log.with(titleText).debug("The SSO title text found");
     assertEquals("SSO title has incorrect text", "Sign in with your Google Account", titleText);
@@ -131,6 +132,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @When("I enter my correct SSO credentials and click OK")
   public void i_enter_my_correct_SSO_credentials_and_click_OK() {
+    log.info("*******2 HERE IS THE PAGE SOURCE BEGINNING********: " + driver.getPageSource());
+    log.info("*******2 HERE IS THE PAGE SOURCE END********");
     log.with(userId).debug("The user id for the SSO");
     sso.enterUserId(userId);
     sso.clickNextButton();
