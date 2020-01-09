@@ -3,7 +3,6 @@ package uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
 import cucumber.api.java.After;
@@ -22,6 +21,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.ResourceAccessException;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
@@ -62,8 +63,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     invalidCaseId = new InvalidCaseId(driver);
     accessEqUrl = baseUrl + accessEqPath;
     completedUrl = baseUrl + completedPath;
-    invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
-    //		closeAnyDriverWindowsCurrentlyOpen();
+    invalidCaseIdUrl = baseUrl + invalidCaseIdPath; 
   }
 
   @After("@TearDown")
@@ -76,31 +76,38 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     closeAnyDriverWindowsCurrentlyOpen();
   }
 
-  private void closeAnyDriverWindowsCurrentlyOpen() throws InterruptedException {
-    String mainWindow = driver.getWindowHandle();
+  @Given("I am about to do a smoke test by going to a field service endpoint")
+  public void i_am_about_to_do_a_smoke_test_by_going_to_a_field_service_endpoint() {
+    log.info("About to check that the Contact Centre service is running...");
+  }
 
-    // To handle all new opened windows.
-    Set<String> s1 = driver.getWindowHandles();
-    Iterator<String> i1 = s1.iterator();
+  @Then("I do the smoke test and receive a response of OK from the field service")
+  public void i_do_the_smoke_test_and_receive_a_response_of_OK_from_the_field_service() {
+    try {
+      HttpStatus fieldServiceStatus = checkFieldServiceRunning();
+      log.with(fieldServiceStatus)
+          .info("Smoke Test: The response from https://localhost:443/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09");
+      assertEquals(
+          "THE FIELD SERVICE MAY NOT BE RUNNING - it does not give a response code of 200",
+          HttpStatus.OK,
+          fieldServiceStatus);
+    } catch (ResourceAccessException e) {
+      log.error(
+          "THE FIELD SERVICE MAY NOT BE RUNNING: A ResourceAccessException has occurred.");
+      log.error(e.getMessage());
+      fail();
+      System.exit(0);
+    } catch (Exception e) {
+      log.error("THE FIELD SERVICE MAY NOT BE RUNNING: An unexpected has occurred.");
+      log.error(e.getMessage());
+      fail();
+      System.exit(0);
+    } 
+  }
 
-    while (i1.hasNext()) {
-      String childWindow = i1.next();
-
-      if (!mainWindow.equalsIgnoreCase(childWindow)) {
-
-        // Switching to Child window
-        driver.switchTo().window(childWindow);
-        Thread.sleep(5000);
-
-        // Closing the Child Window.
-        driver.close();
-      }
-    }
-    // Switching to Parent window i.e Main Window.
-    driver.switchTo().window(mainWindow);
-
-    // Closing the Parent Window.
-    driver.close();
+  private HttpStatus checkFieldServiceRunning() {
+    // TODO Auto-generated method stub
+    return null;
   }
 
   @Given("I am a field officer and I have access to a device with SSO")
@@ -234,14 +241,14 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   private void setupOSWebdriver() {
     String os = System.getProperty("os.name").toLowerCase();
     if (os.contains("mac")) {
-      System.setProperty(
-          "webdriver.gecko.driver", "src/test/resources/geckodriver/geckodriver.macos");
+      System.setProperty("webdriver.gecko.driver",
+          "src/test/resources/geckodriver/geckodriver.macos");
     } else if (os.contains("linux")) {
-      System.setProperty(
-          "webdriver.gecko.driver", "src/test/resources/geckodriver/geckodriver.linux");
+      System.setProperty("webdriver.gecko.driver",
+          "src/test/resources/geckodriver/geckodriver.linux");
     } else {
-      System.err.println(
-          "Unsupported platform - gecko driver not available for platform [" + os + "]");
+      System.err
+          .println("Unsupported platform - gecko driver not available for platform [" + os + "]");
       System.exit(1);
     }
   }
@@ -261,5 +268,32 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     options.setLogLevel(FirefoxDriverLogLevel.DEBUG);
     driver = new FirefoxDriver(options);
     driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+  }
+
+  private void closeAnyDriverWindowsCurrentlyOpen() throws InterruptedException {
+    String mainWindow = driver.getWindowHandle();
+
+    // To handle all new opened windows.
+    Set<String> s1 = driver.getWindowHandles();
+    Iterator<String> i1 = s1.iterator();
+
+    while (i1.hasNext()) {
+      String childWindow = i1.next();
+
+      if (!mainWindow.equalsIgnoreCase(childWindow)) {
+
+        // Switching to Child window
+        driver.switchTo().window(childWindow);
+        Thread.sleep(5000);
+
+        // Closing the Child Window.
+        driver.close();
+      }
+    }
+    // Switching to Parent window i.e Main Window.
+    driver.switchTo().window(mainWindow);
+
+    // Closing the Parent Window.
+    driver.close();
   }
 }
