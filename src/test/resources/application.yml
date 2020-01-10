@@ -10,9 +10,9 @@ info:
 # ie -Dlogging.level.org.springframework=DEBUG
 logging:
   level:
-    root: WARN
-    uk.gov.ons.ctp: WARN
-    org.springframework: ERROR
+    root: INFO
+    uk.gov.ons.ctp: INFO
+    org.springframework: INFO
   profile: DEV
   useJson: false
 

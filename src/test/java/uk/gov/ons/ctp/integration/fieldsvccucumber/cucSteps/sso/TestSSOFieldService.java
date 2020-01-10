@@ -105,7 +105,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Given("I am a field officer and I have access to a device with SSO")
   public void i_am_a_field_officer_and_I_have_access_to_a_device_with_SSO() {
-    log.debug("Nothing to do here: I am a field officer and I have access to a device with SSO");
+    log.info("3 Nothing to do here: I am a field officer and I have access to a device with SSO");
   }
 
   @Given("I click on the job link in chrome")
@@ -123,8 +123,6 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    log.info("*******1 HERE IS THE PAGE SOURCE BEGINNING********: " + driver.getPageSource());
-    log.info("*******1 HERE IS THE PAGE SOURCE END********");
     String titleText = sso.getSSOTitleText();
     log.with(titleText).debug("The SSO title text found");
     assertEquals("SSO title has incorrect text", "Sign in with your Google Account", titleText);
@@ -153,13 +151,12 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     }
 
     String currentURL = driver.getCurrentUrl();
-
+    log.info("*******3 HERE IS THE PAGE SOURCE BEGINNING********: " + driver.getPageSource());
+    log.info("*******3 HERE IS THE PAGE SOURCE END********");
     log.with(currentURL).info("The current URL to check");
     log.info(
         "We need to assert that it tried to open the EQ page but that page does not exist i.e. that the current URL contains the following text: //session/%3Ftoken");
-    String devTextToFind = "/session/?token";
-    String localTextToFind = "/session?token";
-    assertTrue(currentURL.contains(devTextToFind) || currentURL.contains(localTextToFind));
+    assertTrue(currentURL.contains("session") && currentURL.contains("token"));
   }
 
   @Given("that the response to a CCS interview job has already been submitted")
