@@ -121,8 +121,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
 
     try {
-      log.info("Sleep for 5 seconds to give the SSO page time to appear");
-      Thread.sleep(5000);
+      log.info("Sleep for 10 seconds to give the SSO page time to appear");
+      Thread.sleep(10000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -140,8 +140,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     userSso.clickNextButton();
 
     try {
-      log.info("Sleep for 10 seconds to give it time to move to the password page");
-      Thread.sleep(10000);
+      log.info("Sleep for 100 seconds to give it time to move to the password page");
+      Thread.sleep(100000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
@@ -155,8 +155,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
     try {
       log.info(
-          "Sleep for 10 seconds to give it time to attempt to load EQ (this can take quite a long time in DEV)");
-      Thread.sleep(10000);
+          "Sleep for 100 seconds to give it time to attempt to load EQ (this can take quite a long time in DEV)");
+      Thread.sleep(100000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
