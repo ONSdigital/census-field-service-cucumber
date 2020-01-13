@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.Error404PageObject;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PasswordSSO;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
@@ -40,7 +39,6 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   private PasswordSSO passwordSso = null;
   private QuestionnaireCompleted questionnaireCompleted = null;
   private InvalidCaseId invalidCaseId = null;
-  private Error404PageObject error404PageObject = null;
   private Wait wait = null;
 
   @Value("${config.username}")
@@ -67,7 +65,6 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     passwordSso = new PasswordSSO(driver);
     questionnaireCompleted = new QuestionnaireCompleted(driver);
     invalidCaseId = new InvalidCaseId(driver);
-    error404PageObject = new Error404PageObject(driver);
     accessEqUrl = baseUrl + accessEqPath;
     completedUrl = baseUrl + completedPath;
     invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
