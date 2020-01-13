@@ -123,8 +123,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
 
     try {
-//      log.info("Sleep for 10 seconds to give the SSO page time to appear");
-//      Thread.sleep(10000);
+      //      log.info("Sleep for 10 seconds to give the SSO page time to appear");
+      //      Thread.sleep(10000);
       log.info("Wait up to 100 seconds for the SSO username sign in page to appear");
       wait.forLoading(100);
     } catch (Exception e) {
@@ -144,8 +144,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     userSso.clickNextButton();
 
     try {
-//      log.info("Sleep for 100 seconds to give it time to move to the password page");
-//      Thread.sleep(100000);
+      //      log.info("Sleep for 100 seconds to give it time to move to the password page");
+      //      Thread.sleep(100000);
       log.info("Wait up to 100 seconds for the SSO password sign in page to appear");
       wait.forLoading(100);
     } catch (Exception e) {
