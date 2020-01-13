@@ -11,11 +11,11 @@ import org.openqa.selenium.support.PageFactory;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SSO {
+public class UsernameSSO {
 
   private WebDriver driver;
 
-  public SSO(WebDriver driver) {
+  public UsernameSSO(WebDriver driver) {
     this.driver = driver;
     PageFactory.initElements(driver, this);
   }
@@ -28,12 +28,6 @@ public class SSO {
 
   @FindBy(css = "#next")
   private WebElement nextButton;
-
-  @FindBy(css = "#Passwd")
-  private WebElement passwordBox;
-
-  @FindBy(css = "#signIn")
-  private WebElement signInButton;
 
   public String getSSOTitleText() {
     return ssoTitle.getText();
@@ -54,22 +48,5 @@ public class SSO {
 
   public void clickNextButton() {
     nextButton.click();
-  }
-
-  public void clickPasswordBox() {
-    passwordBox.click();
-  }
-
-  public void addTextToPasswordBox(String txtToAdd) {
-    passwordBox.sendKeys(txtToAdd);
-  }
-
-  public void enterPassword(String password) {
-    clickPasswordBox();
-    addTextToPasswordBox(password);
-  }
-
-  public void clickSignInButton() {
-    signInButton.click();
   }
 }

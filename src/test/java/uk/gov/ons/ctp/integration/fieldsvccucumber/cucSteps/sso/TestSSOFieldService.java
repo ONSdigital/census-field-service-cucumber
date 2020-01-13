@@ -25,15 +25,17 @@ import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PasswordSSO;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.SSO;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.UsernameSSO;
 
 public class TestSSOFieldService extends SpringIntegrationTest {
 
   private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);
   private static final boolean headless = true;
   private WebDriver driver = null;
-  private SSO sso = null;
+  private UsernameSSO userSso = null;
+  private PasswordSSO passwordSso = null;
   private QuestionnaireCompleted questionnaireCompleted = null;
   private InvalidCaseId invalidCaseId = null;
 
@@ -57,7 +59,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   public void setup() throws CTPException, InterruptedException {
     setupOSWebdriver();
     setupDriverAndURLs();
-    sso = new SSO(driver);
+    userSso = new UsernameSSO(driver);
+    passwordSso = new PasswordSSO(driver);
     questionnaireCompleted = new QuestionnaireCompleted(driver);
     invalidCaseId = new InvalidCaseId(driver);
     accessEqUrl = baseUrl + accessEqPath;
@@ -123,7 +126,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    String titleText = sso.getSSOTitleText();
+    String titleText = userSso.getSSOTitleText();
     log.with(titleText).debug("The SSO title text found");
     assertEquals("SSO title has incorrect text", "Sign in with your Google Account", titleText);
   }
@@ -133,10 +136,19 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     log.info("*******2 HERE IS THE PAGE SOURCE BEGINNING********: " + driver.getPageSource());
     log.info("*******2 HERE IS THE PAGE SOURCE END********");
     log.with(userId).debug("The user id for the SSO");
-    sso.enterUserId(userId);
-    sso.clickNextButton();
-    sso.enterPassword(pw);
-    sso.clickSignInButton();
+    userSso.enterUserId(userId);
+    userSso.clickNextButton();
+    
+    try {
+      log.info(
+          "Sleep for 10 seconds to give it time to move to the password page");
+      Thread.sleep(10000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    
+    passwordSso.enterPassword(pw);
+    passwordSso.clickSignInButton();
   }
 
   @Then("the EQ launch event is triggered")
@@ -202,7 +214,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     }
 
     try {
-      sso.getSSOTitleText();
+      userSso.getSSOTitleText();
       fail();
     } catch (NoSuchElementException e) {
       log.info(
