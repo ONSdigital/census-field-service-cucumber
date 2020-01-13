@@ -23,6 +23,7 @@ import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
+import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PasswordSSO;
@@ -38,6 +39,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   private PasswordSSO passwordSso = null;
   private QuestionnaireCompleted questionnaireCompleted = null;
   private InvalidCaseId invalidCaseId = null;
+  private Wait wait = null;
 
   @Value("${config.username}")
   private String userId;
@@ -66,7 +68,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     accessEqUrl = baseUrl + accessEqPath;
     completedUrl = baseUrl + completedPath;
     invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
-    //		closeAnyDriverWindowsCurrentlyOpen();
+    wait = new Wait(driver);
   }
 
   @After("@TearDown")
@@ -121,9 +123,11 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
 
     try {
-      log.info("Sleep for 10 seconds to give the SSO page time to appear");
-      Thread.sleep(10000);
-    } catch (InterruptedException e) {
+//      log.info("Sleep for 10 seconds to give the SSO page time to appear");
+//      Thread.sleep(10000);
+      log.info("Wait up to 100 seconds for the SSO username sign in page to appear");
+      wait.forLoading(100);
+    } catch (Exception e) {
       e.printStackTrace();
     }
     String titleText = userSso.getSSOTitleText();
@@ -140,9 +144,11 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     userSso.clickNextButton();
 
     try {
-      log.info("Sleep for 100 seconds to give it time to move to the password page");
-      Thread.sleep(100000);
-    } catch (InterruptedException e) {
+//      log.info("Sleep for 100 seconds to give it time to move to the password page");
+//      Thread.sleep(100000);
+      log.info("Wait up to 100 seconds for the SSO password sign in page to appear");
+      wait.forLoading(100);
+    } catch (Exception e) {
       e.printStackTrace();
     }
 

@@ -26,14 +26,8 @@
 
 		<dependency>
 			<groupId>uk.gov.ons.ctp.integration.common</groupId>
-			<artifactId>event-publisher</artifactId>
-			<version>0.0.16</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
+			<artifactId>cucumber-common</artifactId>
+			<version>0.0.8</version>
 		</dependency>
 
 		<dependency>
