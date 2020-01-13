@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.Error404PageObject;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PasswordSSO;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
@@ -39,6 +40,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   private PasswordSSO passwordSso = null;
   private QuestionnaireCompleted questionnaireCompleted = null;
   private InvalidCaseId invalidCaseId = null;
+  private Error404PageObject error404PageObject = null;
   private Wait wait = null;
 
   @Value("${config.username}")
@@ -65,6 +67,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     passwordSso = new PasswordSSO(driver);
     questionnaireCompleted = new QuestionnaireCompleted(driver);
     invalidCaseId = new InvalidCaseId(driver);
+    error404PageObject = new Error404PageObject(driver);
     accessEqUrl = baseUrl + accessEqPath;
     completedUrl = baseUrl + completedPath;
     invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
@@ -123,8 +126,6 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
 
     try {
-      //      log.info("Sleep for 10 seconds to give the SSO page time to appear");
-      //      Thread.sleep(10000);
       log.info("Wait up to 100 seconds for the SSO username sign in page to appear");
       wait.forLoading(100);
     } catch (Exception e) {
@@ -137,15 +138,11 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @When("I enter my correct SSO credentials and click OK")
   public void i_enter_my_correct_SSO_credentials_and_click_OK() {
-    log.info("*******2 HERE IS THE PAGE SOURCE BEGINNING********: " + driver.getPageSource());
-    log.info("*******2 HERE IS THE PAGE SOURCE END********");
     log.with(userId).debug("The user id for the SSO");
     userSso.enterUserId(userId);
     userSso.clickNextButton();
 
     try {
-      //      log.info("Sleep for 100 seconds to give it time to move to the password page");
-      //      Thread.sleep(100000);
       log.info("Wait up to 100 seconds for the SSO password sign in page to appear");
       wait.forLoading(100);
     } catch (Exception e) {
@@ -160,19 +157,25 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   public void the_EQ_launch_event_is_triggered() {
 
     try {
-      log.info(
-          "Sleep for 100 seconds to give it time to attempt to load EQ (this can take quite a long time in DEV)");
-      Thread.sleep(100000);
-    } catch (InterruptedException e) {
+      log.info("Sleep for 10 seconds to give the 404 error page time to appear");
+      Thread.sleep(10000);
+    } catch (Exception e) {
       e.printStackTrace();
     }
 
     String currentURL = driver.getCurrentUrl();
-    log.info("*******3 HERE IS THE PAGE SOURCE BEGINNING********: " + driver.getPageSource());
-    log.info("*******3 HERE IS THE PAGE SOURCE END********");
+    String pageSource = driver.getPageSource();
+    String textToFind = "<div class=\"wrapper\">";
+    int pageSourceStart = pageSource.indexOf(textToFind);
+    if (pageSourceStart > 0) {
+      log.info(
+          "*******HERE IS THE PAGE SOURCE BEGINNING********: "
+              + driver.getPageSource().substring(pageSourceStart));
+      log.info("*******HERE IS THE PAGE SOURCE END********");
+    }
     log.with(currentURL).info("The current URL to check");
     log.info(
-        "We need to assert that it tried to open the EQ page but that page does not exist i.e. that the current URL contains the following text: //session/%3Ftoken");
+        "We need to assert that it tried to open the EQ page but that page does not exist i.e. that the current URL contains both the word 'session' and the word 'token'");
     assertTrue(currentURL.contains("session") && currentURL.contains("token"));
   }
 
