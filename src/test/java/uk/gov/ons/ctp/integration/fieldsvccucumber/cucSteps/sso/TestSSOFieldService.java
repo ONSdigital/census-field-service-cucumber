@@ -138,15 +138,14 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     log.with(userId).debug("The user id for the SSO");
     userSso.enterUserId(userId);
     userSso.clickNextButton();
-    
+
     try {
-      log.info(
-          "Sleep for 10 seconds to give it time to move to the password page");
+      log.info("Sleep for 10 seconds to give it time to move to the password page");
       Thread.sleep(10000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
-    
+
     passwordSso.enterPassword(pw);
     passwordSso.clickSignInButton();
   }
