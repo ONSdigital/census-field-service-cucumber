@@ -251,23 +251,30 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   }
 
   private void setupDriverAndURLs() {
-    driver = getWebDriver(WebDriverType.CHROME, true);
+    driver = getWebDriver(WebDriverType.CHROME, false);
     driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
   }
 
   private static ChromeDriver getChromeDriver(
-      final boolean isHeadless, final String os, final DesiredCapabilities desiredCapabilities) {
+      final boolean isHeadless, final String os) {
     ChromeOptions options = new ChromeOptions();
-    /**
-     * This if statement was added because the latest stable version of firefox gets installed as
-     * "/usr/bin/firefox-esr" and then a symbolic link for it, named firefox, is created in the same
-     * location - see the Dockerfile.
-     */
+    
+    LoggingPreferences logs = new LoggingPreferences();
+    logs.enable(LogType.BROWSER, Level.ALL);
+    logs.enable(LogType.CLIENT, Level.ALL);
+    logs.enable(LogType.DRIVER, Level.ALL);
+    logs.enable(LogType.PERFORMANCE, Level.ALL);
+    logs.enable(LogType.PROFILER, Level.ALL);
+    logs.enable(LogType.SERVER, Level.ALL);
+
+    options.setCapability(CapabilityType.LOGGING_PREFS, logs);
+
+    
     if (os.contains("linux")) {
       options.setBinary("/usr/bin/chrome");
     }
     options.setHeadless(isHeadless);
-    options.merge(desiredCapabilities);
+    
     return new ChromeDriver(options);
   }
 
@@ -289,23 +296,13 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   public static WebDriver getWebDriver(
       final WebDriverType webDriverType, final boolean isHeadless) {
-    LoggingPreferences logs = new LoggingPreferences();
-    logs.enable(LogType.BROWSER, Level.ALL);
-    logs.enable(LogType.CLIENT, Level.ALL);
-    logs.enable(LogType.DRIVER, Level.ALL);
-    logs.enable(LogType.PERFORMANCE, Level.ALL);
-    logs.enable(LogType.PROFILER, Level.ALL);
-    logs.enable(LogType.SERVER, Level.ALL);
-
-    DesiredCapabilities desiredCapabilities = DesiredCapabilities.firefox();
-    desiredCapabilities.setCapability(CapabilityType.LOGGING_PREFS, logs);
-
+    
     WebDriver driver;
     final String os = System.getProperty("os.name").toLowerCase();
 
     setupChromeOSWebdriver(os);
-    driver = getChromeDriver(isHeadless, os, desiredCapabilities);
-
+    driver = getChromeDriver(isHeadless, os);
+    
     return driver;
   }
 }
