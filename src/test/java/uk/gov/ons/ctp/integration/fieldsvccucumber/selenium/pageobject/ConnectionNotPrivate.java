@@ -19,7 +19,7 @@ public class ConnectionNotPrivate {
     this.driver = driver;
     PageFactory.initElements(driver, this);
   }
-  
+
   @FindBy(xpath = "//*[@id=\'details-button\']")
   private WebElement advancedButton;
 

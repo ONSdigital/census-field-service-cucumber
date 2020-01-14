@@ -123,21 +123,23 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   }
 
   @Given("a connection privacy warning may be displayed on the screen")
-  public void a_connection_privacy_warning_may_be_displayed_on_the_screen() throws InterruptedException {
-      if (baseUrl.equals("https://localhost:443")) {
-        wait.forLoading(100);
-        log.info("We are running locally so we expect a connection privacy warning to appear");
-        ConnectionNotPrivate connectionNotPrivate = new ConnectionNotPrivate(driver);
-        connectionNotPrivate.clickAdvancedButton();
-//        wait.forLoading(100);
-        ConnectionNotPrivateAdvanced connectionNotPrivateAdvanced = new ConnectionNotPrivateAdvanced(driver);
-        Thread.sleep(5000);
-        log.info("About to click on Proceed link");
-        connectionNotPrivateAdvanced.clickProceedLink();
-        log.info("Just clicked on Proceed link");
-      }
+  public void a_connection_privacy_warning_may_be_displayed_on_the_screen()
+      throws InterruptedException {
+    if (baseUrl.equals("https://localhost:443")) {
+      wait.forLoading(100);
+      log.info("We are running locally so we expect a connection privacy warning to appear");
+      ConnectionNotPrivate connectionNotPrivate = new ConnectionNotPrivate(driver);
+      connectionNotPrivate.clickAdvancedButton();
+      //        wait.forLoading(100);
+      ConnectionNotPrivateAdvanced connectionNotPrivateAdvanced =
+          new ConnectionNotPrivateAdvanced(driver);
+      Thread.sleep(5000);
+      log.info("About to click on Proceed link");
+      connectionNotPrivateAdvanced.clickProceedLink();
+      log.info("Just clicked on Proceed link");
+    }
   }
-  
+
   @Given("a field proxy authentication UI is displayed on the screen")
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
 
@@ -268,7 +270,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   }
 
   private void setupDriverAndURLs() {
-    driver = getWebDriver(WebDriverType.CHROME, false);
+    driver = getWebDriver(WebDriverType.CHROME, true);
     driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
   }
 
