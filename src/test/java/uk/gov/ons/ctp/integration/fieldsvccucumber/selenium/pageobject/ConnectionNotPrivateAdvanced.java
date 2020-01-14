@@ -11,19 +11,19 @@ import org.openqa.selenium.support.PageFactory;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ConnectionNotPrivate {
+public class ConnectionNotPrivateAdvanced {
 
   private WebDriver driver;
 
-  public ConnectionNotPrivate(WebDriver driver) {
+  public ConnectionNotPrivateAdvanced(WebDriver driver) {
     this.driver = driver;
     PageFactory.initElements(driver, this);
   }
-  
-  @FindBy(xpath = "//*[@id=\'details-button\']")
-  private WebElement advancedButton;
 
-  public void clickAdvancedButton() {
-    advancedButton.click();
+  @FindBy(xpath = "//*[@id=\'proceed-link\']")
+  private WebElement proceedLink;
+
+  public void clickProceedLink() {
+    proceedLink.click();
   }
 }

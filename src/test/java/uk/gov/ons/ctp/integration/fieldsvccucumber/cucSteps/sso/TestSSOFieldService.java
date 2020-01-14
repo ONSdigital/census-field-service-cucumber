@@ -28,6 +28,8 @@ import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.ConnectionNotPrivate;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.ConnectionNotPrivateAdvanced;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PasswordSSO;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
@@ -120,6 +122,22 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     driver.get(accessEqUrl);
   }
 
+  @Given("a connection privacy warning may be displayed on the screen")
+  public void a_connection_privacy_warning_may_be_displayed_on_the_screen() throws InterruptedException {
+      if (baseUrl.equals("https://localhost:443")) {
+        wait.forLoading(100);
+        log.info("We are running locally so we expect a connection privacy warning to appear");
+        ConnectionNotPrivate connectionNotPrivate = new ConnectionNotPrivate(driver);
+        connectionNotPrivate.clickAdvancedButton();
+//        wait.forLoading(100);
+        ConnectionNotPrivateAdvanced connectionNotPrivateAdvanced = new ConnectionNotPrivateAdvanced(driver);
+        Thread.sleep(5000);
+        log.info("About to click on Proceed link");
+        connectionNotPrivateAdvanced.clickProceedLink();
+        log.info("Just clicked on Proceed link");
+      }
+  }
+  
   @Given("a field proxy authentication UI is displayed on the screen")
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
 
@@ -250,7 +268,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   }
 
   private void setupDriverAndURLs() {
-    driver = getWebDriver(WebDriverType.CHROME, true);
+    driver = getWebDriver(WebDriverType.CHROME, false);
     driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
   }
 
