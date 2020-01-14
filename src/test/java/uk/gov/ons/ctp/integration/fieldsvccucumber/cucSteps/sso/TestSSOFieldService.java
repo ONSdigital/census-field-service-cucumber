@@ -24,7 +24,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.util.Wait;
@@ -251,14 +250,13 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   }
 
   private void setupDriverAndURLs() {
-    driver = getWebDriver(WebDriverType.CHROME, false);
+    driver = getWebDriver(WebDriverType.CHROME, true);
     driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
   }
 
-  private static ChromeDriver getChromeDriver(
-      final boolean isHeadless, final String os) {
+  private static ChromeDriver getChromeDriver(final boolean isHeadless, final String os) {
     ChromeOptions options = new ChromeOptions();
-    
+
     LoggingPreferences logs = new LoggingPreferences();
     logs.enable(LogType.BROWSER, Level.ALL);
     logs.enable(LogType.CLIENT, Level.ALL);
@@ -269,12 +267,11 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
     options.setCapability(CapabilityType.LOGGING_PREFS, logs);
 
-    
     if (os.contains("linux")) {
       options.setBinary("/usr/bin/chrome");
     }
     options.setHeadless(isHeadless);
-    
+
     return new ChromeDriver(options);
   }
 
@@ -296,13 +293,13 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   public static WebDriver getWebDriver(
       final WebDriverType webDriverType, final boolean isHeadless) {
-    
+
     WebDriver driver;
     final String os = System.getProperty("os.name").toLowerCase();
 
     setupChromeOSWebdriver(os);
     driver = getChromeDriver(isHeadless, os);
-    
+
     return driver;
   }
 }
