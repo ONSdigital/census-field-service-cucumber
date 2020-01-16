@@ -12,7 +12,7 @@
 	<parent>
 		<groupId>uk.gov.ons.ctp.integration</groupId>
 		<artifactId>census-int-common-config</artifactId>
-		<version>0.0.8</version>
+		<version>0.0.13</version>
 	</parent>
 
 
@@ -21,13 +21,25 @@
 		<dependency>
 			<groupId>uk.gov.ons.ctp.integration.common</groupId>
 			<artifactId>framework</artifactId>
-			<version>0.0.34</version>
+			<version>0.0.51</version>
 		</dependency>
 
 		<dependency>
 			<groupId>uk.gov.ons.ctp.integration.common</groupId>
 			<artifactId>cucumber-common</artifactId>
-			<version>0.0.8</version>
+			<version>0.0.9</version>
+		</dependency>
+
+		<dependency>
+			<groupId>uk.gov.ons.ctp.integration.common</groupId>
+			<artifactId>event-publisher</artifactId>
+			<version>0.0.22</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -137,12 +149,12 @@
 		<!-- ONS libraries -->
 
 
-	    <dependency>
+		<dependency>
 			<groupId>uk.gov.ons.ctp.integration</groupId>
 			<artifactId>contactcentreserviceapi</artifactId>
-			<version>0.0.49</version>
+			<version>0.0.53</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
