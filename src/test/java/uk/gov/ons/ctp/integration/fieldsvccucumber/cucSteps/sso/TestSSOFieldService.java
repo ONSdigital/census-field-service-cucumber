@@ -14,16 +14,10 @@ import cucumber.api.java.en.When;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.logging.LogType;
-import org.openqa.selenium.logging.LoggingPreferences;
-import org.openqa.selenium.remote.CapabilityType;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.util.Wait;
@@ -139,7 +133,9 @@ public class TestSSOFieldService extends SpringIntegrationTest {
       connectionNotPrivateAdvanced.clickProceedLink();
       log.info("Just clicked on Proceed link");
     } else {
-      log.info("We do not appear to be running in localhost. The current URL is: " + driver.getCurrentUrl());
+      log.info(
+          "We do not appear to be running in localhost. The current URL is: "
+              + driver.getCurrentUrl());
     }
   }
 
@@ -271,5 +267,4 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     String messageTextFound = invalidCaseId.getInvalidCaseIdText();
     assertEquals("Reason: Bad request - Case ID invalid", invalidCaseIdMessage, messageTextFound);
   }
-
 }
