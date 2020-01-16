@@ -65,7 +65,6 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Before("@SetUpFieldServiceTests")
   public void setup() throws CTPException, InterruptedException {
-//    setupDriverAndURLs();
     userSso = new UsernameSSO(driver);
     passwordSso = new PasswordSSO(driver);
     questionnaireCompleted = new QuestionnaireCompleted(driver);
@@ -273,57 +272,4 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     assertEquals("Reason: Bad request - Case ID invalid", invalidCaseIdMessage, messageTextFound);
   }
 
-//  private void setupDriverAndURLs() {
-//    driver = WebDriverUtils.getWebDriver(WebDriverType.FIREFOX, false, Level.WARNING);
-//    driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-//  }
-
-//  private static ChromeDriver getChromeDriver(final boolean isHeadless, final String os) {
-//    ChromeOptions options = new ChromeOptions();
-//
-//    LoggingPreferences logs = new LoggingPreferences();
-//    logs.enable(LogType.BROWSER, Level.ALL);
-//    logs.enable(LogType.CLIENT, Level.ALL);
-//    logs.enable(LogType.DRIVER, Level.ALL);
-//    logs.enable(LogType.PERFORMANCE, Level.ALL);
-//    logs.enable(LogType.PROFILER, Level.ALL);
-//    logs.enable(LogType.SERVER, Level.ALL);
-//
-//    options.setCapability(CapabilityType.LOGGING_PREFS, logs);
-//
-//    if (os.contains("linux")) {
-//      options.setBinary("/usr/bin/chrome");
-//    }
-//    options.setHeadless(isHeadless);
-//
-//    return new ChromeDriver(options);
-//  }
-
-//  private static void setupChromeOSWebdriver(final String os) {
-//    if (os.contains("mac")) {
-//      System.setProperty(
-//          "webdriver.chrome.driver",
-//          "src/test/resources/chromedriver/chromedriver.79.0.3945.36.macos");
-//    } else if (os.contains("linux")) {
-//      System.setProperty(
-//          "webdriver.chrome.driver",
-//          "src/test/resources/chromedriver/chromedriver.79.0.3945.36.linux");
-//    } else {
-//      System.err.println(
-//          "Unsupported platform - gecko driver not available for platform [" + os + "]");
-//      System.exit(1);
-//    }
-//  }
-//
-//  public static WebDriver getWebDriver(
-//      final WebDriverType webDriverType, final boolean isHeadless) {
-//
-//    WebDriver driver;
-//    final String os = System.getProperty("os.name").toLowerCase();
-//
-//    setupChromeOSWebdriver(os);
-//    driver = getChromeDriver(isHeadless, os);
-//
-//    return driver;
-//  }
 }
