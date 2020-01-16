@@ -16,10 +16,11 @@ Feature: Test SSO to EQ using Field Launcher Service
   Scenario: Authentication of SSO
     Given I am a field officer and I have access to a device with SSO
     And I click on the job link in chrome
-    And a connection privacy warning may be displayed on the screen
     And a field proxy authentication UI is displayed on the screen
     When I enter my correct SSO credentials and click OK
     Then the EQ launch event is triggered
+
+#And a connection privacy warning may be displayed on the screen
 
   #@SetUpFieldServiceTests @TearDown
   #Scenario: Display message to the field officer when the response has already submitted
