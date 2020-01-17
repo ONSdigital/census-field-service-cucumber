@@ -34,7 +34,7 @@ import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.UsernameS
 public class TestSSOFieldService extends SpringIntegrationTest {
 
   private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);
-  private WebDriver driver = WebDriverUtils.getWebDriver(WebDriverType.CHROME, false, Level.WARNING);
+  private WebDriver driver = WebDriverUtils.getWebDriver(WebDriverType.CHROME, true, Level.WARNING);
   private UsernameSSO userSso = null;
   private PasswordSSO passwordSso = null;
   private QuestionnaireCompleted questionnaireCompleted = null;
