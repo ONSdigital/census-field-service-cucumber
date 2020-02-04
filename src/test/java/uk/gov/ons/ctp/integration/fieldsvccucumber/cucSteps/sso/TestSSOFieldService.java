@@ -33,7 +33,7 @@ import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.UsernameS
 public class TestSSOFieldService extends SpringIntegrationTest {
 
   private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);
-  private WebDriver driver = WebDriverUtils.getWebDriver(WebDriverType.CHROME, false, "WARN");
+  private WebDriver driver = WebDriverUtils.getWebDriver(WebDriverType.FIREFOX, false, "WARN");
   private UsernameSSO userSso = null;
   private PasswordSSO passwordSso = null;
   private QuestionnaireCompleted questionnaireCompleted = null;
@@ -203,6 +203,13 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Then("the completion message {string} is displayed to me")
   public void the_completion_message_is_displayed_to_me(String completionMessage) {
+    
+    try {
+      log.info("Wait up to 100 seconds for the completion message page to appear");
+      wait.forLoading(100);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     String titleText = questionnaireCompleted.getCCSCompletedTitleText();
     assertEquals("CCS Completion title has incorrect text", completionMessage, titleText);
