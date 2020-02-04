@@ -63,8 +63,11 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     questionnaireCompleted = new QuestionnaireCompleted(driver);
     invalidCaseId = new InvalidCaseId(driver);
     accessEqUrl = baseUrl + accessEqPath;
+    log.with(accessEqUrl).info("The value of accessEqUrl");
     completedUrl = baseUrl + completedPath;
+    log.with(completedUrl).info("The value of completedUrl");
     invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
+    log.with(invalidCaseIdUrl).info("The value of invalidCaseIdUrl");
     wait = new Wait(driver);
   }
 
