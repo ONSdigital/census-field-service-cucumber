@@ -18,6 +18,7 @@ script:
   - cp $HOME/.m2/settings.xml local-maven-repo
 
 after_success:
+  - echo "TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST"
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
       ./scripts/docker_push.sh
     fi

@@ -205,8 +205,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   public void the_completion_message_is_displayed_to_me(String completionMessage) {
 
     try {
-      log.info("Wait up to 100 seconds for the completion message page to appear");
-      wait.forLoading(100);
+      log.info("Sleep for 10 seconds to give the completion message page time to appear");
+      Thread.sleep(10000);
     } catch (Exception e) {
       e.printStackTrace();
     }
