@@ -6,7 +6,7 @@ The Cucumber acceptance tests, for the Field Service, use the following default 
 ```
 base-url: https://localhost:443
 ```
-Before you can run all the cucumber features in this project the following steps need to be done:
+Before you can run the cucumber features in this project the following steps need to be done:
 
 # When using a LOCAL runtime environment RabbitMQ must be running on port 35672.
 
