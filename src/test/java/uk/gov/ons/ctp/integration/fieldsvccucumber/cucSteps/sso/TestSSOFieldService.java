@@ -14,7 +14,6 @@ import cucumber.api.java.en.When;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
