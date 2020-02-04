@@ -1,5 +1,5 @@
 # census-field-service-cucumber
-Cucumber acceptance tests for the Census Integration teams Field Service
+Cucumber acceptance tests for the Census Integration team's Field Service
 
 The Cucumber acceptance tests, for the Field Service, use the following default value for the base-url, which is set in the application.yml:
 
