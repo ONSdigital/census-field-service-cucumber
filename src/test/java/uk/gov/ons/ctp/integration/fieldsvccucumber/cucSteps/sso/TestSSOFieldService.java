@@ -184,8 +184,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   public void the_EQ_launch_event_is_triggered() {
 
     try {
-      log.info("Sleep for 10 seconds to give the 404 error page time to appear");
-      Thread.sleep(10000);
+      log.info("Sleep for 60 seconds to give the 404 error page time to appear");
+      Thread.sleep(60000);
     } catch (Exception e) {
       e.printStackTrace();
     }
