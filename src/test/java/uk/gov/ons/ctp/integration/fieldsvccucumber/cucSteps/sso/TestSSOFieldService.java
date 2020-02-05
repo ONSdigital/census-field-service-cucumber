@@ -169,13 +169,21 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     }
 
     passwordSso.enterPassword(pw);
+    log.info("The following password has just been entered: " + pw);
     passwordSso.clickSignInButton();
+    log.info("The sign in button has just been clicked");
+    try {
+      log.info("Sleep for 10 seconds to give the next page time to load");
+      Thread.sleep(10000);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Then("the EQ launch event is triggered")
   public void the_EQ_launch_event_is_triggered() {
 
-    try {
+try {
       log.info("Sleep for 10 seconds to give the 404 error page time to appear");
       Thread.sleep(10000);
     } catch (Exception e) {
