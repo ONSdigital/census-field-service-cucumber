@@ -19,10 +19,11 @@ script:
 
 after_success:
   - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-      ./scripts/docker_push.sh
+      ./scripts/docker_push.sh;
     fi
 
 cache:
   directories:
     - $HOME/.m2
+
 

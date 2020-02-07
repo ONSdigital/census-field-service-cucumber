@@ -14,28 +14,31 @@ import cucumber.api.java.en.When;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxDriverLogLevel;
-import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.ons.ctp.common.error.CTPException;
+import uk.gov.ons.ctp.common.util.Wait;
+import uk.gov.ons.ctp.common.util.WebDriverType;
+import uk.gov.ons.ctp.common.util.WebDriverUtils;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.ConnectionNotPrivate;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.ConnectionNotPrivateAdvanced;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PasswordSSO;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.SSO;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.UsernameSSO;
 
 public class TestSSOFieldService extends SpringIntegrationTest {
 
   private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);
-  private static final boolean headless = true;
-  private WebDriver driver = null;
-  private SSO sso = null;
+  private WebDriver driver = WebDriverUtils.getWebDriver(WebDriverType.FIREFOX, true, "WARN");
+  private UsernameSSO userSso = null;
+  private PasswordSSO passwordSso = null;
   private QuestionnaireCompleted questionnaireCompleted = null;
   private InvalidCaseId invalidCaseId = null;
+  private Wait wait = null;
 
   @Value("${config.username}")
   private String userId;
@@ -55,15 +58,17 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Before("@SetUpFieldServiceTests")
   public void setup() throws CTPException, InterruptedException {
-    setupOSWebdriver();
-    setupDriverAndURLs();
-    sso = new SSO(driver);
+    userSso = new UsernameSSO(driver);
+    passwordSso = new PasswordSSO(driver);
     questionnaireCompleted = new QuestionnaireCompleted(driver);
     invalidCaseId = new InvalidCaseId(driver);
     accessEqUrl = baseUrl + accessEqPath;
+    log.with(accessEqUrl).info("The value of accessEqUrl");
     completedUrl = baseUrl + completedPath;
+    log.with(completedUrl).info("The value of completedUrl");
     invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
-    //		closeAnyDriverWindowsCurrentlyOpen();
+    log.with(invalidCaseIdUrl).info("The value of invalidCaseIdUrl");
+    wait = new Wait(driver);
   }
 
   @After("@TearDown")
@@ -105,7 +110,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Given("I am a field officer and I have access to a device with SSO")
   public void i_am_a_field_officer_and_I_have_access_to_a_device_with_SSO() {
-    log.debug("Nothing to do here: I am a field officer and I have access to a device with SSO");
+    log.info("3 Nothing to do here: I am a field officer and I have access to a device with SSO");
   }
 
   @Given("I click on the job link in chrome")
@@ -114,17 +119,38 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     driver.get(accessEqUrl);
   }
 
+  @Given("a connection privacy warning may be displayed on the screen")
+  public void a_connection_privacy_warning_may_be_displayed_on_the_screen()
+      throws InterruptedException {
+    if (baseUrl.equals("https://localhost:443")) {
+      wait.forLoading(100);
+      log.info("We are running locally so we expect a connection privacy warning to appear");
+      ConnectionNotPrivate connectionNotPrivate = new ConnectionNotPrivate(driver);
+      connectionNotPrivate.clickAdvancedButton();
+      //        wait.forLoading(100);
+      ConnectionNotPrivateAdvanced connectionNotPrivateAdvanced =
+          new ConnectionNotPrivateAdvanced(driver);
+      Thread.sleep(5000);
+      log.info("About to click on Proceed link");
+      connectionNotPrivateAdvanced.clickProceedLink();
+      log.info("Just clicked on Proceed link");
+    } else {
+      log.info(
+          "We do not appear to be running in localhost. The current URL is: "
+              + driver.getCurrentUrl());
+    }
+  }
+
   @Given("a field proxy authentication UI is displayed on the screen")
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
 
     try {
-      log.info("Sleep for 5 seconds to give the SSO page time to appear");
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
+      log.info("Wait up to 100 seconds for the SSO username sign in page to appear");
+      wait.forLoading(100);
+    } catch (Exception e) {
       e.printStackTrace();
     }
-
-    String titleText = sso.getSSOTitleText();
+    String titleText = userSso.getSSOTitleText();
     log.with(titleText).debug("The SSO title text found");
     assertEquals("SSO title has incorrect text", "Sign in with your Google Account", titleText);
   }
@@ -132,31 +158,45 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   @When("I enter my correct SSO credentials and click OK")
   public void i_enter_my_correct_SSO_credentials_and_click_OK() {
     log.with(userId).debug("The user id for the SSO");
-    sso.enterUserId(userId);
-    sso.clickNextButton();
-    sso.enterPassword(pw);
-    sso.clickSignInButton();
+    userSso.enterUserId(userId);
+    userSso.clickNextButton();
+
+    try {
+      log.info("Wait up to 100 seconds for the SSO password sign in page to appear");
+      wait.forLoading(100);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    passwordSso.enterPassword(pw);
+    log.info("The following password has just been entered: " + pw);
+    passwordSso.clickSignInButton();
+    log.info("The sign in button has just been clicked");
+    try {
+      log.info("Sleep for 10 seconds to give the next page time to load");
+      Thread.sleep(10000);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   @Then("the EQ launch event is triggered")
   public void the_EQ_launch_event_is_triggered() {
 
-    try {
-      log.info(
-          "Sleep for 10 seconds to give it time to attempt to load EQ (this can take quite a long time in DEV)");
-      Thread.sleep(10000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-
     String currentURL = driver.getCurrentUrl();
-
+    String pageSource = driver.getPageSource();
+    String textToFind = "<div class=\"wrapper\">";
+    int pageSourceStart = pageSource.indexOf(textToFind);
+    if (pageSourceStart > 0) {
+      log.info(
+          "*******HERE IS THE PAGE SOURCE BEGINNING********: "
+              + driver.getPageSource().substring(pageSourceStart));
+      log.info("*******HERE IS THE PAGE SOURCE END********");
+    }
     log.with(currentURL).info("The current URL to check");
     log.info(
-        "We need to assert that it tried to open the EQ page but that page does not exist i.e. that the current URL contains the following text: //session/%3Ftoken");
-    String devTextToFind = "/session/?token";
-    String localTextToFind = "/session?token";
-    assertTrue(currentURL.contains(devTextToFind) || currentURL.contains(localTextToFind));
+        "We need to assert that it tried to open the EQ page but that page does not exist i.e. that the current URL contains both the word 'session' and the word 'token'");
+    assertTrue(currentURL.contains("session") && currentURL.contains("token"));
   }
 
   @Given("that the response to a CCS interview job has already been submitted")
@@ -167,6 +207,13 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Then("the completion message {string} is displayed to me")
   public void the_completion_message_is_displayed_to_me(String completionMessage) {
+
+    try {
+      log.info("Sleep for 10 seconds to give the completion message page time to appear");
+      Thread.sleep(10000);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     String titleText = questionnaireCompleted.getCCSCompletedTitleText();
     assertEquals("CCS Completion title has incorrect text", completionMessage, titleText);
@@ -202,7 +249,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     }
 
     try {
-      sso.getSSOTitleText();
+      userSso.getSSOTitleText();
       fail();
     } catch (NoSuchElementException e) {
       log.info(
@@ -229,37 +276,5 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
     String messageTextFound = invalidCaseId.getInvalidCaseIdText();
     assertEquals("Reason: Bad request - Case ID invalid", invalidCaseIdMessage, messageTextFound);
-  }
-
-  private void setupOSWebdriver() {
-    String os = System.getProperty("os.name").toLowerCase();
-    if (os.contains("mac")) {
-      System.setProperty(
-          "webdriver.gecko.driver", "src/test/resources/geckodriver/geckodriver.macos");
-    } else if (os.contains("linux")) {
-      System.setProperty(
-          "webdriver.gecko.driver", "src/test/resources/geckodriver/geckodriver.linux");
-    } else {
-      System.err.println(
-          "Unsupported platform - gecko driver not available for platform [" + os + "]");
-      System.exit(1);
-    }
-  }
-
-  private void setupDriverAndURLs() {
-    FirefoxOptions options = new FirefoxOptions();
-    options.setHeadless(headless);
-    String os = System.getProperty("os.name").toLowerCase();
-    /**
-     * This if statement was added because the latest stable version of firefox gets installed as
-     * "/usr/bin/firefox-esr" and then a symbolic link for it, named firefox, is created in the same
-     * location - see the Dockerfile.
-     */
-    if (os.contains("linux")) {
-      options.setBinary("/usr/bin/firefox");
-    }
-    options.setLogLevel(FirefoxDriverLogLevel.DEBUG);
-    driver = new FirefoxDriver(options);
-    driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
   }
 }

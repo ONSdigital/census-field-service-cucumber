@@ -1,13 +1,12 @@
 # census-field-service-cucumber
-
-Cucumber acceptance tests for the Census Integration teams Field Service
+Cucumber acceptance tests for the Census Integration team's Field Service
 
 The Cucumber acceptance tests, for the Field Service, use the following default value for the base-url, which is set in the application.yml:
 
 ```
-base-url: https://localhost:8443
+base-url: https://localhost:443
 ```
-Before you can run all the cucumber features in this project the following steps need to be done:
+Before you can run the cucumber features in this project the following steps need to be done:
 
 # When using a LOCAL runtime environment RabbitMQ must be running on port 35672.
 
@@ -16,7 +15,14 @@ Go to the census-rh-service repo and enter this command:
 ```
 docker-compose up -d
 ```
-# The Mock Case API Service must also be running. 
+# Also, when using a LOCAL runtime environment, you need to set the password by exporting an environment variable named CONFIG_PASSWORD.
+
+Navigate to the census-field-service-cucumber repo, in a terminal, and enter this command (replacing <password> with the password):
+
+```
+export CONFIG_PASSWORD='<password>'
+```
+# The Mock Case API Service must be running. 
 
 Open the census-mock-case-api-service repo in Eclipse. Right click on the following file and choose 'Run As' --> 'Java Application':
 

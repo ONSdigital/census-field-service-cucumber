@@ -20,7 +20,9 @@ Feature: Test SSO to EQ using Field Launcher Service
     When I enter my correct SSO credentials and click OK
     Then the EQ launch event is triggered
 
-  @SetUpFieldServiceTests @TearDown
+#And a connection privacy warning may be displayed on the screen
+
+  @SetUpFieldServiceTests @TearDown 
   Scenario: Display message to the field officer when the response has already submitted
     Given that the response to a CCS interview job has already been submitted
     And I click on the job link in chrome

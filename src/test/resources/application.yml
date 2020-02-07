@@ -10,13 +10,13 @@ info:
 # ie -Dlogging.level.org.springframework=DEBUG
 logging:
   level:
-    root: WARN
-    uk.gov.ons.ctp: WARN
-    org.springframework: ERROR
+    root: INFO
+    uk.gov.ons.ctp: INFO
+    org.springframework: INFO
   profile: DEV
   useJson: false
 
 config:
-  username: pb@test.field.census.gov.uk
-  password: Robotron11
-  baseurl: https://localhost:8443
+  username: fieldservice_test@test.field.census.gov.uk
+  password: override_me_with_runtime_property
+  baseurl: https://localhost:443
