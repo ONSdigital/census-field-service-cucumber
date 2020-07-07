@@ -6,7 +6,7 @@
 
   <groupId>census-field-service-cucumber</groupId>
   <artifactId>census-field-service-cucumber</artifactId>
-  <version>1.0.0-SNAPSHOT-CR977</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <parent>
@@ -98,19 +98,19 @@
     <dependency>
       <groupId>uk.gov.ons.ctp.integration.common</groupId>
       <artifactId>framework</artifactId>
-      <version>0.0.57</version>
+      <version>0.0.62</version>
     </dependency>
 
     <dependency>
       <groupId>uk.gov.ons.ctp.integration.common</groupId>
       <artifactId>cucumber-common</artifactId>
-      <version>0.0.19-SNAPSHOT-CR997</version>
+      <version>0.0.19</version>
     </dependency>
 
     <dependency>
       <groupId>uk.gov.ons.ctp.integration.common</groupId>
       <artifactId>event-publisher</artifactId>
-      <version>0.0.39-SNAPSHOT-CR997</version>
+      <version>0.0.39</version>
     </dependency>
 
     <dependency>
