@@ -12,13 +12,11 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Value;
-import uk.gov.ons.ctp.common.error.CTPException;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.common.util.WebDriverType;
 import uk.gov.ons.ctp.common.util.WebDriverUtils;
@@ -57,7 +55,9 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   private String invalidCaseIdUrl = null;
 
   @Before("@SetUpFieldServiceTests")
-  public void setup() throws CTPException, InterruptedException {
+  public void setup() throws Exception {
+    driver.manage().timeouts().implicitlyWait(1, TimeUnit.MICROSECONDS);
+
     userSso = new UsernameSSO(driver);
     passwordSso = new PasswordSSO(driver);
     questionnaireCompleted = new QuestionnaireCompleted(driver);
@@ -73,39 +73,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @After("@TearDown")
   public void deleteDriver() {
-    driver.close();
-  }
-
-  @After("@TearDownMultiWindows")
-  public void deleteDriverRH2() throws InterruptedException {
-    closeAnyDriverWindowsCurrentlyOpen();
-  }
-
-  private void closeAnyDriverWindowsCurrentlyOpen() throws InterruptedException {
-    String mainWindow = driver.getWindowHandle();
-
-    // To handle all new opened windows.
-    Set<String> s1 = driver.getWindowHandles();
-    Iterator<String> i1 = s1.iterator();
-
-    while (i1.hasNext()) {
-      String childWindow = i1.next();
-
-      if (!mainWindow.equalsIgnoreCase(childWindow)) {
-
-        // Switching to Child window
-        driver.switchTo().window(childWindow);
-        Thread.sleep(5000);
-
-        // Closing the Child Window.
-        driver.close();
-      }
-    }
-    // Switching to Parent window i.e Main Window.
-    driver.switchTo().window(mainWindow);
-
-    // Closing the Parent Window.
-    driver.close();
+    driver.quit();
   }
 
   @Given("I am a field officer and I have access to a device with SSO")
@@ -119,6 +87,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     driver.get(accessEqUrl);
   }
 
+  // FIXME do we need this ? its not in the feature ?
   @Given("a connection privacy warning may be displayed on the screen")
   public void a_connection_privacy_warning_may_be_displayed_on_the_screen()
       throws InterruptedException {
@@ -130,7 +99,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
       //        wait.forLoading(100);
       ConnectionNotPrivateAdvanced connectionNotPrivateAdvanced =
           new ConnectionNotPrivateAdvanced(driver);
-      Thread.sleep(5000);
+      waitForPage();
       log.info("About to click on Proceed link");
       connectionNotPrivateAdvanced.clickProceedLink();
       log.info("Just clicked on Proceed link");
@@ -143,16 +112,9 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Given("a field proxy authentication UI is displayed on the screen")
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
-
-    try {
-      log.info("Wait up to 100 seconds for the SSO username sign in page to appear");
-      wait.forLoading(100);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
     String titleText = userSso.getSSOTitleText();
     log.with(titleText).debug("The SSO title text found");
-    assertEquals("SSO title has incorrect text", "Sign in with your Google Account", titleText);
+    assertEquals("SSO title has incorrect text", "Use your Google Account", titleText);
   }
 
   @When("I enter my correct SSO credentials and click OK")
@@ -160,29 +122,15 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     log.with(userId).debug("The user id for the SSO");
     userSso.enterUserId(userId);
     userSso.clickNextButton();
-
-    try {
-      log.info("Wait up to 100 seconds for the SSO password sign in page to appear");
-      wait.forLoading(100);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
     passwordSso.enterPassword(pw);
     log.info("The following password has just been entered: " + pw);
     passwordSso.clickSignInButton();
     log.info("The sign in button has just been clicked");
-    try {
-      log.info("Sleep for 10 seconds to give the next page time to load");
-      Thread.sleep(10000);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
   }
 
   @Then("the EQ launch event is triggered")
   public void the_EQ_launch_event_is_triggered() {
-
+    waitForPage();
     String currentURL = driver.getCurrentUrl();
     String pageSource = driver.getPageSource();
     String textToFind = "<div class=\"wrapper\">";
@@ -207,14 +155,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Then("the completion message {string} is displayed to me")
   public void the_completion_message_is_displayed_to_me(String completionMessage) {
-
-    try {
-      log.info("Sleep for 10 seconds to give the completion message page time to appear");
-      Thread.sleep(10000);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
+    waitForPage();
     String titleText = questionnaireCompleted.getCCSCompletedTitleText();
     assertEquals("CCS Completion title has incorrect text", completionMessage, titleText);
   }
@@ -227,31 +168,17 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     jse.executeScript("window.open()");
     ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
     driver.switchTo().window(tabs.get(1));
-
-    try {
-      log.info("Sleep for 5 seconds to give the new tab time to appear");
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-
+    waitForPage();
     driver.get(accessEqUrl);
   }
 
   @Then("I am not presented with the SSO screen to enter my credentials")
   public void i_am_not_presented_with_the_SSO_screen_to_enter_my_credentials() {
-
-    try {
-      log.info("Sleep for 5 seconds to give the SSO page time to appear");
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-
+    waitForPage();
     try {
       userSso.getSSOTitleText();
       fail();
-    } catch (NoSuchElementException e) {
+    } catch (TimeoutException toe) {
       log.info(
           "We are expecting that the SSO screen will not appear, therefore there should not be any SSO title element found");
     }
@@ -259,22 +186,22 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Given("that the job URL contains an invalid case id")
   public void that_the_job_URL_contains_an_invalid_case_id() {
-
     log.info("change the base URL to be one that contains an invalid case id");
     accessEqUrl = invalidCaseIdUrl;
   }
 
   @Then("the invalid case id message {string} is displayed to me")
   public void the_invalid_case_id_message_is_displayed_to_me(String invalidCaseIdMessage) {
-
-    try {
-      log.info("Sleep for 5 seconds to give the invalid case page time to appear");
-      Thread.sleep(5000);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-
+    waitForPage();
     String messageTextFound = invalidCaseId.getInvalidCaseIdText();
     assertEquals("Reason: Bad request - Case ID invalid", invalidCaseIdMessage, messageTextFound);
+  }
+
+  // FIXME can we remove this?
+  private void waitForPage() {
+    try {
+      Thread.sleep(2000); // 2 seconds
+    } catch (InterruptedException e) {
+    }
   }
 }

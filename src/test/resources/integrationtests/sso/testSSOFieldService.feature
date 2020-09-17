@@ -12,7 +12,7 @@
 Feature: Test SSO to EQ using Field Launcher Service
   I want to verify that I can access the EQ using SSO for the Field Launcher Service
 
-  @SetUpFieldServiceTests @TearDown
+  @SetUpFieldServiceTests @TearDown @AuthOfSso
   Scenario: Authentication of SSO
     Given I am a field officer and I have access to a device with SSO
     And I click on the job link in chrome
@@ -22,14 +22,14 @@ Feature: Test SSO to EQ using Field Launcher Service
 
 #And a connection privacy warning may be displayed on the screen
 
-  @SetUpFieldServiceTests @TearDown 
+  @SetUpFieldServiceTests @TearDown @QCompleted
   Scenario: Display message to the field officer when the response has already submitted
     Given that the response to a CCS interview job has already been submitted
     And I click on the job link in chrome
     When I enter my correct SSO credentials and click OK
     Then the completion message "The CCS Questionnaire has been completed." is displayed to me
-  
-  @SetUpFieldServiceTests @TearDownMultiWindows
+
+  @SetUpFieldServiceTests @TearDownMultiWindows @AlreadyAuth
   Scenario: Field Officer is already authenticated
     Given I click on the job link in chrome
     And I enter my correct SSO credentials and click OK
@@ -37,7 +37,7 @@ Feature: Test SSO to EQ using Field Launcher Service
     Then I am not presented with the SSO screen to enter my credentials
     And the EQ launch event is triggered
 
-  @SetUpFieldServiceTests @TearDown
+  @SetUpFieldServiceTests @TearDown @InvalidCase
   Scenario: Display message to the field officer when the case id is invalid
     Given that the job URL contains an invalid case id
     And I click on the job link in chrome

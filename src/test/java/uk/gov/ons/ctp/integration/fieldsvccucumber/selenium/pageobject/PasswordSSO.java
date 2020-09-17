@@ -2,6 +2,7 @@ package uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,35 +10,30 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-public class PasswordSSO {
-
-  private WebDriver driver;
+public class PasswordSSO extends PageObjectBase {
 
   public PasswordSSO(WebDriver driver) {
-    this.driver = driver;
+    super(driver);
+    waitForLoading();
     PageFactory.initElements(driver, this);
   }
 
-  @FindBy(xpath = "/html/body/div/div[2]/div[1]/h2")
-  private WebElement ssoTitle;
-
-  @FindBy(css = "#Passwd")
+  @FindBy(xpath = "//form//input[@type='password']")
   private WebElement passwordBox;
 
-  @FindBy(css = "#signIn")
+  @FindBy(xpath = "//*[@id=\'passwordNext\']")
   private WebElement signInButton;
 
-  public String getSSOTitleText() {
-    return ssoTitle.getText();
-  }
-
   public void clickPasswordBox() {
+    waitForElement(10, passwordBox, getClass().getSimpleName() + ".clickPasswordBox");
     passwordBox.click();
   }
 
   public void addTextToPasswordBox(String txtToAdd) {
+    waitForElement(passwordBox, getClass().getSimpleName() + ".addTextToPasswordBox");
     passwordBox.sendKeys(txtToAdd);
   }
 
@@ -47,6 +43,7 @@ public class PasswordSSO {
   }
 
   public void clickSignInButton() {
+    waitForElement(signInButton, getClass().getSimpleName() + ".clickSignInButton");
     signInButton.click();
   }
 }
