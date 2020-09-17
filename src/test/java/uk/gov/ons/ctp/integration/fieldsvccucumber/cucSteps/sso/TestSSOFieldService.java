@@ -78,7 +78,8 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Given("I am a field officer and I have access to a device with SSO")
   public void i_am_a_field_officer_and_I_have_access_to_a_device_with_SSO() {
-    log.info("3 Nothing to do here: I am a field officer and I have access to a device with SSO");
+    log.info("Nothing to do here: I am a field officer and I have access to a device with SSO");
+    log.info("My identity will be username: {}  password: {}", userId, pw);
   }
 
   @Given("I click on the job link in chrome")
