@@ -16,36 +16,31 @@ import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.ons.ctp.common.util.Wait;
-import uk.gov.ons.ctp.common.util.WebDriverType;
-import uk.gov.ons.ctp.common.util.WebDriverUtils;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.ConnectionNotPrivate;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.ConnectionNotPrivateAdvanced;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PasswordSSO;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.SamlTestLogin;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.SamlTestUserInfo;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.UsernameSSO;
 
 public class TestSSOFieldService extends SpringIntegrationTest {
-
   private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);
-  private WebDriver driver = WebDriverUtils.getWebDriver(WebDriverType.FIREFOX, true, "WARN");
+  private WebDriver driver;
   private UsernameSSO userSso = null;
   private PasswordSSO passwordSso = null;
   private QuestionnaireCompleted questionnaireCompleted = null;
   private InvalidCaseId invalidCaseId = null;
+
+  private SamlTestLogin samlTestLogin;
+  private SamlTestUserInfo samlTestUserInfo;
+
   private Wait wait = null;
 
-  @Value("${config.username}")
-  private String userId;
-
-  @Value("${config.password}")
-  private String pw;
-
-  @Value("${config.baseurl}")
-  private String baseUrl;
+  @Autowired private TestConfig testConfig;
+  @Autowired private WebDriverFactory driverFactory;
 
   private String accessEqPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
   private String accessEqUrl = null;
@@ -54,32 +49,42 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   private String invalidCaseIdPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
   private String invalidCaseIdUrl = null;
 
+  private boolean useSamlTest = true;
+
   @Before("@SetUpFieldServiceTests")
   public void setup() throws Exception {
+    this.driver = driverFactory.getWebDriver();
     driver.manage().timeouts().implicitlyWait(1, TimeUnit.MICROSECONDS);
+
+    useSamlTest = "samltest".equals(testConfig.getIdpType());
+    samlTestLogin = new SamlTestLogin(driver);
+    samlTestUserInfo = new SamlTestUserInfo(driver);
 
     userSso = new UsernameSSO(driver);
     passwordSso = new PasswordSSO(driver);
     questionnaireCompleted = new QuestionnaireCompleted(driver);
     invalidCaseId = new InvalidCaseId(driver);
-    accessEqUrl = baseUrl + accessEqPath;
+    accessEqUrl = testConfig.getBaseUrl() + accessEqPath;
     log.with(accessEqUrl).info("The value of accessEqUrl");
-    completedUrl = baseUrl + completedPath;
+    completedUrl = testConfig.getBaseUrl() + completedPath;
     log.with(completedUrl).info("The value of completedUrl");
-    invalidCaseIdUrl = baseUrl + invalidCaseIdPath;
+    invalidCaseIdUrl = testConfig.getBaseUrl() + invalidCaseIdPath;
     log.with(invalidCaseIdUrl).info("The value of invalidCaseIdUrl");
     wait = new Wait(driver);
   }
 
   @After("@TearDown")
   public void deleteDriver() {
-    driver.quit();
+    driverFactory.closeWebDriver(driver);
   }
 
   @Given("I am a field officer and I have access to a device with SSO")
   public void i_am_a_field_officer_and_I_have_access_to_a_device_with_SSO() {
     log.info("Nothing to do here: I am a field officer and I have access to a device with SSO");
-    log.info("My identity will be username: {}  password: {}", userId, pw);
+    log.info(
+        "My identity will be username: {}  password: {}",
+        testConfig.getUserId(),
+        testConfig.getPassword());
   }
 
   @Given("I click on the job link in chrome")
@@ -88,51 +93,42 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     driver.get(accessEqUrl);
   }
 
-  // FIXME do we need this ? its not in the feature ?
-  @Given("a connection privacy warning may be displayed on the screen")
-  public void a_connection_privacy_warning_may_be_displayed_on_the_screen()
-      throws InterruptedException {
-    if (baseUrl.equals("https://localhost:443")) {
-      wait.forLoading(100);
-      log.info("We are running locally so we expect a connection privacy warning to appear");
-      ConnectionNotPrivate connectionNotPrivate = new ConnectionNotPrivate(driver);
-      connectionNotPrivate.clickAdvancedButton();
-      //        wait.forLoading(100);
-      ConnectionNotPrivateAdvanced connectionNotPrivateAdvanced =
-          new ConnectionNotPrivateAdvanced(driver);
-      waitForPage();
-      log.info("About to click on Proceed link");
-      connectionNotPrivateAdvanced.clickProceedLink();
-      log.info("Just clicked on Proceed link");
-    } else {
-      log.info(
-          "We do not appear to be running in localhost. The current URL is: "
-              + driver.getCurrentUrl());
-    }
-  }
-
   @Given("a field proxy authentication UI is displayed on the screen")
   public void a_field_proxy_authentication_UI_is_displayed_on_the_screen() {
-    String titleText = userSso.getSSOTitleText();
-    log.with(titleText).debug("The SSO title text found");
-    assertEquals("SSO title has incorrect text", "Use your Google Account", titleText);
+    if (useSamlTest) {
+      wait.forLoading(100);
+      String headingText = samlTestLogin.getHeadingText();
+      assertEquals("SAMLtest.ID".toUpperCase(), headingText.toUpperCase());
+      log.info("Using SAML Test");
+    } else {
+      String titleText = userSso.getSSOTitleText();
+      log.with(titleText).debug("The SSO title text found");
+      assertEquals("SSO title has incorrect text", "Use your Google Account", titleText);
+    }
   }
 
   @When("I enter my correct SSO credentials and click OK")
   public void i_enter_my_correct_SSO_credentials_and_click_OK() {
-    log.with(userId).debug("The user id for the SSO");
-    userSso.enterUserId(userId);
-    userSso.clickNextButton();
-    passwordSso.enterPassword(pw);
-    log.info("The following password has just been entered: " + pw);
-    passwordSso.clickSignInButton();
-    log.info("The sign in button has just been clicked");
+    if (useSamlTest) {
+      samlTestLogin.enterUserId(testConfig.getUserId());
+      samlTestLogin.enterPassword(testConfig.getPassword());
+      samlTestLogin.clickSubmitButton();
+      wait.forLoading(100);
+      samlTestUserInfo.clickAccept();
+    } else {
+      log.with(testConfig.getUserId()).debug("The user id for the SSO");
+      userSso.enterUserId(testConfig.getUserId());
+      userSso.clickNextButton();
+      passwordSso.enterPassword(testConfig.getPassword());
+      log.info("The following password has just been entered: " + testConfig.getPassword());
+      passwordSso.clickSignInButton();
+      log.info("The sign in button has just been clicked");
+    }
   }
 
   @Then("the EQ launch event is triggered")
-  public void the_EQ_launch_event_is_triggered() {
-    waitForPage();
-    String currentURL = driver.getCurrentUrl();
+  public void the_EQ_launch_event_is_triggered() throws Exception {
+    String currentURL = waitForEqLaunch();
     String pageSource = driver.getPageSource();
     String textToFind = "<div class=\"wrapper\">";
     int pageSourceStart = pageSource.indexOf(textToFind);
@@ -148,6 +144,18 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     assertTrue(currentURL.contains("session") && currentURL.contains("token"));
   }
 
+  private String waitForEqLaunch() throws Exception {
+    String url = null;
+    for (int i = 0; i < 20; i++) {
+      url = driver.getCurrentUrl();
+      if (url != null && url.contains(testConfig.getEqHost())) {
+        break;
+      }
+      Thread.sleep(500);
+    }
+    return url;
+  }
+
   @Given("that the response to a CCS interview job has already been submitted")
   public void that_the_response_to_a_CCS_interview_job_has_already_been_submitted() {
     log.info("change the base URL to be one for an interview that has already been submitted");
@@ -156,7 +164,6 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Then("the completion message {string} is displayed to me")
   public void the_completion_message_is_displayed_to_me(String completionMessage) {
-    waitForPage();
     String titleText = questionnaireCompleted.getCCSCompletedTitleText();
     assertEquals("CCS Completion title has incorrect text", completionMessage, titleText);
   }
@@ -169,13 +176,11 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     jse.executeScript("window.open()");
     ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
     driver.switchTo().window(tabs.get(1));
-    waitForPage();
     driver.get(accessEqUrl);
   }
 
   @Then("I am not presented with the SSO screen to enter my credentials")
   public void i_am_not_presented_with_the_SSO_screen_to_enter_my_credentials() {
-    waitForPage();
     try {
       userSso.getSSOTitleText();
       fail();
@@ -193,16 +198,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   @Then("the invalid case id message {string} is displayed to me")
   public void the_invalid_case_id_message_is_displayed_to_me(String invalidCaseIdMessage) {
-    waitForPage();
     String messageTextFound = invalidCaseId.getInvalidCaseIdText();
     assertEquals("Reason: Bad request - Case ID invalid", invalidCaseIdMessage, messageTextFound);
-  }
-
-  // FIXME can we remove this?
-  private void waitForPage() {
-    try {
-      Thread.sleep(2000); // 2 seconds
-    } catch (InterruptedException e) {
-    }
   }
 }
