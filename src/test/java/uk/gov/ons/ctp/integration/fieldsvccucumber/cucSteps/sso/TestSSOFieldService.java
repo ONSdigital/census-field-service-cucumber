@@ -83,7 +83,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     log.info("Nothing to do here: I am a field officer and I have access to a device with SSO");
     log.info(
         "My identity will be username: {}  password: {}",
-        testConfig.getUserId(),
+        testConfig.getUsername(),
         testConfig.getPassword());
   }
 
@@ -110,14 +110,14 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   @When("I enter my correct SSO credentials and click OK")
   public void i_enter_my_correct_SSO_credentials_and_click_OK() {
     if (useSamlTest) {
-      samlTestLogin.enterUserId(testConfig.getUserId());
+      samlTestLogin.enterUserId(testConfig.getUsername());
       samlTestLogin.enterPassword(testConfig.getPassword());
       samlTestLogin.clickSubmitButton();
       wait.forLoading(100);
       samlTestUserInfo.clickAccept();
     } else {
-      log.with(testConfig.getUserId()).debug("The user id for the SSO");
-      userSso.enterUserId(testConfig.getUserId());
+      log.with(testConfig.getUsername()).debug("The user id for the SSO");
+      userSso.enterUserId(testConfig.getUsername());
       userSso.clickNextButton();
       passwordSso.enterPassword(testConfig.getPassword());
       log.info("The following password has just been entered: " + testConfig.getPassword());

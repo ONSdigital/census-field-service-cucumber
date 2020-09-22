@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("config")
 public class TestConfig {
   private String idpType;
-  private String userId;
+  private String username;
   private String password;
   private String baseUrl;
   private String eqHost;
