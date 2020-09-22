@@ -20,11 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.ons.ctp.common.util.Wait;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PasswordSSO;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.SamlTestLogin;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.SamlTestUserInfo;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.UsernameSSO;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.google.PasswordSSO;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.google.UsernameSSO;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.samltest.SamlTestLogin;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.samltest.SamlTestUserInfo;
 
 public class TestSSOFieldService extends SpringIntegrationTest {
   private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);

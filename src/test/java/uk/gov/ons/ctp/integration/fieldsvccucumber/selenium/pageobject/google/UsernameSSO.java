@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.google;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PageObjectBase;
 
+/** Google Username challenge page */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor

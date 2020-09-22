@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.samltest;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,6 +8,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.PageObjectBase;
 
 /** Page representing the samltest.id information release page. */
 @Data
