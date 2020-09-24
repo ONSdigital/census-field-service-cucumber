@@ -20,6 +20,8 @@ project can be configured to run against an alternative IDP provider that does n
 
 ## Running locally against the Alterate IDP
 
+First, ensure that the Field Service is configured for the Alternate IDP, and running.
+
 No special configuration is needed, however it may be wise to ensure any application properties are not overriden, in particular
 the configured username and password. The run maven in the normal way:
 
@@ -30,6 +32,8 @@ mvn clean install
 ```
 
 ## Running locally against the Google GSuite IDP
+
+First, ensure that the Field Service is configured for the Google Gsuite IDP, and running.
 
 You will need to configure the password that matches the configured username in **application-google.yml** and run with
 the **google** profile:
