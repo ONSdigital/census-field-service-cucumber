@@ -1,56 +1,50 @@
 # census-field-service-cucumber
-Cucumber acceptance tests for the Census Integration team's Field Service
 
-The Cucumber acceptance tests, for the Field Service, use the following default value for the base-url, which is set in the application.yml:
+Cucumber acceptance tests for the Census Integration team's Field Service.
+
+The Field Service is designed to use the SAML authentication and authorisation to protect
+it primary endpoint, and the SAML IDP (Identity Provider) of choice is Google GSuite. 
+
+For automated Cucumber tests in the GCP environment, Google GSuite IDP will present Captcha pages
+which makes the cucumber tests extremely difficult or impossible to write. For this reason, this 
+project can be configured to run against an alternative IDP provider that does not present a Captcha challenge.
+
+## Prerequisites
+
+* RabbitMQ must be running on port 35672. For running locally, see [RH Service README](https://github.com/ONSdigital/census-rh-service) for 
+  a description of how to get RabbitMQ running locally using `docker-compose`.
+* The [Mock Case API Service](https://github.com/ONSdigital/census-mock-case-api-service)  must be running.
+* The [Field Service](https://github.com/ONSdigital/census-field-service) must be running. See the README to ensure the selected profile,
+  idpId and metadataCertificate are configured, and test it with the "LaunchEQ" endpoint to see if it works. If the dummy EQ URL is set
+  to www.google.com, then this will result in a 404 error page from google, with the URL having session and token parameters.
+
+## Running locally against the Alterate IDP
+
+No special configuration is needed, however it may be wise to ensure any application properties are not overriden, in particular
+the configured username and password. The run maven in the normal way:
 
 ```
-base-url: https://localhost:443
+unset CONFIG_USERNAME
+unset CONFIG_PASSWORD
+mvn clean install
 ```
-Before you can run the cucumber features in this project the following steps need to be done:
 
-# When using a LOCAL runtime environment RabbitMQ must be running on port 35672.
+## Running locally against the Google GSuite IDP
 
-Go to the census-rh-service repo and enter this command:
-
-```
-docker-compose up -d
-```
-# Also, when using a LOCAL runtime environment, you need to set the password by exporting an environment variable named CONFIG_PASSWORD.
-
-Navigate to the census-field-service-cucumber repo, in a terminal, and enter this command (replacing <password> with the password):
+You will need to configure the password that matches the configured username in **application-google.yml** and run with
+the **google** profile:
 
 ```
 export CONFIG_PASSWORD='<password>'
-```
-# The Mock Case API Service must be running. 
-
-Open the census-mock-case-api-service repo in Eclipse. Right click on the following file and choose 'Run As' --> 'Java Application':
-
-```
-uk.gov.ons.ctp.integration.mockcaseapiservice.MockCaseApiServiceApplication.java
-```
-# The VM Arguments need to have been set up for running the Census Field Service in Eclipse.
-
-In Eclipse go to top menu bar and choose Run --> Run Configurations… In the box choose the Arguments tab and enter the following under VM arguments:
-
--Dspring.profiles.active=local
--Dsso.idpId=C00n4re6c
--Dsso.metadataCertificate=<content of certificate e.g. MIIDd...>
-
-# The Census Field Service must be running. 
-
-Open the census-field-service repo in Eclipse. Right click on the following file and choose 'Run As' --> 'Java Application':
-
-```
-uk.gov.ons.ctp.integration.censusfieldsvc.CensusFieldSvcApplication.java
+mvn clean install -Dspring.profiles.active=google
 ```
 
-# Finally, run the cucumber features in this project.
+## Running in the GCP DEV or TEST environment
 
-Navigate to the census-field-service-cucumber repo, in a terminal, and enter either of the following commands:
+The Field Service will be running in the environments, configured for the alternate IPD so that Captchas are not a problem.
 
-```
-mvn test
+A concourse pipeline will run the cucumber tests either triggered or automatically in the normal way.
 
-mvn clean install
-```
+It is important that the the **fs-cucumber-identity** has the correct username/password. For more information
+see section "Using an alternate IDP" in the README at [Field Service](https://github.com/ONSdigital/census-field-service).
+
