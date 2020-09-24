@@ -63,7 +63,7 @@ public class SamlTestLogin extends PageObjectBase {
   }
 
   private void clickPasswordBox() {
-    waitForElement(10, passwordBox, getClass().getSimpleName() + ".clickPasswordBox");
+    waitForElement(passwordBox, getClass().getSimpleName() + ".clickPasswordBox");
     passwordBox.click();
   }
 

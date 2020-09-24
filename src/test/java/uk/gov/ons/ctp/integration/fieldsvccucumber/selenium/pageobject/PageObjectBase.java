@@ -23,7 +23,7 @@ public abstract class PageObjectBase {
 
   protected void waitForElement(final WebElement element, final String identifier) {
     log.debug("Waiting for: " + identifier);
-    wait.forElementToBeDisplayed(5, element, identifier);
+    wait.forElementToBeDisplayed(15, element, identifier);
   }
 
   protected void waitForElement(

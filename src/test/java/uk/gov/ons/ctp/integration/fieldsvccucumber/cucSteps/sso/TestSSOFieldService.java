@@ -146,7 +146,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
 
   private String waitForEqLaunch() throws Exception {
     String url = null;
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 30; i++) {
       url = driver.getCurrentUrl();
       if (url != null && url.contains(testConfig.getEqHost())) {
         break;
