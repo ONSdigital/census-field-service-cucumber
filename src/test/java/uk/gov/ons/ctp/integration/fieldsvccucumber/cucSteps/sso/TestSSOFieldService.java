@@ -144,16 +144,21 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     assertTrue(currentURL.contains("session") && currentURL.contains("token"));
   }
 
+  private boolean isEqHostUrl(String url) {
+    return url != null && url.contains(testConfig.getEqHost());
+  }
+
   private String waitForEqLaunch() throws Exception {
-    String url = null;
-    for (int i = 0; i < 30; i++) {
-      url = driver.getCurrentUrl();
-      if (url != null && url.contains(testConfig.getEqHost())) {
-        break;
+    // give it 15 seconds to appear before timing out.
+    for (int i = 0; i < 1500; i++) {
+      String url = driver.getCurrentUrl();
+      if (isEqHostUrl(url)) {
+        return url;
       }
-      Thread.sleep(500);
+      Thread.sleep(10);
     }
-    return url;
+    fail("Timed out waiting for EQ URL in browser");
+    return null;
   }
 
   @Given("that the response to a CCS interview job has already been submitted")
