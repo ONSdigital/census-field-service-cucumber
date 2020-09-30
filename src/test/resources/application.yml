@@ -17,6 +17,14 @@ logging:
   useJson: false
 
 config:
-  username: fieldservice_test@test.field.census.gov.uk
-  password: override_me_with_runtime_property
-  baseurl: https://localhost:443
+  idp-type: samltest
+  username: rick
+  password: psych
+  base-url: https://localhost:443
+  eq-host: www.google.com
+
+webdriver:
+  type: FIREFOX
+  logging_level: WARN
+  headless: true
+  

@@ -1,0 +1,19 @@
+#
+# You can use this google profile, if the field service is running against google IDP
+# and it you are running locally.
+#
+# The reason why you must be running locally is because on the kubernetes environment 
+# you will get a Captcha which will fail the cucumber tests.
+#
+# An example of running with this profile locally:
+#
+#   export CONFIG_PASSWORD=<the password for the user-id below>
+#
+#   mvn clean install -Dspring.profiles.active=google
+#
+
+config:
+  idp-type: google
+  username: fieldservice_test@test.field.census.gov.uk
+  password: override_me_with_runtime_property
+  
