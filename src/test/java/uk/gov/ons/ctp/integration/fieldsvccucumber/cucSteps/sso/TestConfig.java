@@ -11,4 +11,5 @@ public class TestConfig {
   private String password;
   private String baseUrl;
   private String eqHost;
+  private int launchTimeout;
 }

@@ -149,15 +149,15 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   }
 
   private String waitForEqLaunch() throws Exception {
-    // give it 15 seconds to appear before timing out.
-    for (int i = 0; i < 1500; i++) {
+    int timeoutSecs = testConfig.getLaunchTimeout();
+    for (int i = 0; i < (timeoutSecs * 100); i++) {
       String url = driver.getCurrentUrl();
       if (isEqHostUrl(url)) {
         return url;
       }
       Thread.sleep(10);
     }
-    fail("Timed out waiting for EQ URL in browser");
+    fail("Waited " + timeoutSecs + " seconds for EQ URL in browser: timed out");
     return null;
   }
 
