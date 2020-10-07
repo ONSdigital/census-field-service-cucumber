@@ -26,21 +26,21 @@
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-java</artifactId>
-      <version>4.4.0</version>
+      <version>5.4.0</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-junit</artifactId>
-      <version>4.4.0</version>
+      <version>5.4.0</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>io.cucumber</groupId>
       <artifactId>cucumber-spring</artifactId>
-      <version>4.4.0</version>
+      <version>5.4.0</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
@@ -50,17 +50,14 @@
       <artifactId>spring-web</artifactId>
     </dependency>
 
-    <!-- <dependency> <groupId>org.json</groupId> <artifactId>json</artifactId>
-      <version>20180130</version> </dependency> -->
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
     <dependency>
-      <groupId>com.jayway.jsonpath</groupId>
-      <artifactId>json-path</artifactId>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
 
@@ -138,10 +135,8 @@
           <!-- <testClassesDirectory>census-rh-cucumber/src/test/java</testClassesDirectory> -->
           <testSourceDirectory>census-rh-cucumber/src/test/java</testSourceDirectory>
           <includes>
-            <include>**/RunCucumberTestSSO.java</include>
+            <include>**/glue/*.java</include>
           </includes>
-          <!-- <excludes> <exclude>**/*AccessTheCensusRunner.java</exclude>
-            </excludes> -->
         </configuration>
       </plugin>
 

@@ -1,5 +1,6 @@
 package uk.gov.ons.ctp.integration.fieldsvccucumber.main;
 
+import io.cucumber.java.Before;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootContextLoader;
@@ -16,4 +17,8 @@ import uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso.WebDriverFactory
 @EnableConfigurationProperties
 @WebAppConfiguration
 @SpringBootTest
-public class SpringIntegrationTest {}
+public class SpringIntegrationTest {
+
+  @Before(order = 0)
+  public void init() {}
+}

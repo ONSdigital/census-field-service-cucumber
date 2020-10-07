@@ -6,11 +6,11 @@ import static org.junit.Assert.fail;
 
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.JavascriptExecutor;
@@ -18,7 +18,6 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.ons.ctp.common.util.Wait;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.google.PasswordSSO;
@@ -26,7 +25,7 @@ import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.google.Us
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.samltest.SamlTestLogin;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.samltest.SamlTestUserInfo;
 
-public class TestSSOFieldService extends SpringIntegrationTest {
+public class TestSSOFieldService {
   private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);
   private WebDriver driver;
   private UsernameSSO userSso = null;
