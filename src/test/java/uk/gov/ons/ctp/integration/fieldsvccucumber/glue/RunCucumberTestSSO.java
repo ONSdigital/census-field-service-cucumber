@@ -8,6 +8,8 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
     plugin = {"pretty", "html:target/cucumber"},
     features = {"src/test/resources/features/sso"},
-    glue = {"uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso",
-        "uk.gov.ons.ctp.integration.contcencucumber.main"})
+    glue = {
+      "uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso",
+      "uk.gov.ons.ctp.integration.contcencucumber.main"
+    })
 public class RunCucumberTestSSO {}
