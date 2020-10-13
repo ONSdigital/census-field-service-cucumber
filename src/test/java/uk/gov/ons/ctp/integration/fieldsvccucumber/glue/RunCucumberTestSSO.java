@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
     plugin = {"pretty", "html:target/cucumber"},
     features = {"src/test/resources/features/sso"},
     glue = {
-      "uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso",
+      "uk.gov.ons.ctp.integration.fieldsvccucumber.steps",
       "uk.gov.ons.ctp.integration.fieldsvccucumber.main"
     })
 public class RunCucumberTestSSO {}
