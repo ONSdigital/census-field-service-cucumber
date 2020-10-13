@@ -42,11 +42,11 @@ public class TestSSOFieldService {
   @Autowired private TestConfig testConfig;
   @Autowired private WebDriverFactory driverFactory;
 
-  private String accessEqPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
+  private final String accessEqPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
   private String accessEqUrl = null;
-  private String completedPath = "/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
+  private final String completedPath = "/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
   private String completedUrl = null;
-  private String invalidCaseIdPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+  private final String invalidCaseIdPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
   private String invalidCaseIdUrl = null;
 
   private boolean useSamlTest = true;
