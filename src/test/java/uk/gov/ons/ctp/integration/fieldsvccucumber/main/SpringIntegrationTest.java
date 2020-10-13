@@ -7,8 +7,8 @@ import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso.TestConfig;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso.WebDriverFactory;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.WebDriverFactory;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.steps.TestConfig;
 
 @ContextConfiguration(
     classes = {SpringIntegrationTest.class, WebDriverFactory.class, TestConfig.class},

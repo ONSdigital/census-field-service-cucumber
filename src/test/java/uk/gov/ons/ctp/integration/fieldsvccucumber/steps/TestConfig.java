@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.steps;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

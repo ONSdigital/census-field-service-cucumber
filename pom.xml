@@ -43,8 +43,6 @@
       <version>5.4.0</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
-
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
@@ -66,14 +64,6 @@
       <artifactId>selenium-java</artifactId>
     </dependency>
 
-    <!-- Spring dependencies -->
-
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-test</artifactId>
-      <scope>test</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test</artifactId>
@@ -84,8 +74,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-test-autoconfigure</artifactId>
     </dependency>
-
-    <!-- SPRING END -->
 
     <dependency>
       <groupId>javax.inject</groupId>
@@ -98,7 +86,7 @@
     <dependency>
       <groupId>uk.gov.ons.ctp.integration.common</groupId>
       <artifactId>framework</artifactId>
-      <version>0.0.65</version>
+      <version>0.0.66</version>
     </dependency>
 
     <dependency>
@@ -132,8 +120,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <!-- <testClassesDirectory>census-rh-cucumber/src/test/java</testClassesDirectory> -->
-          <testSourceDirectory>census-rh-cucumber/src/test/java</testSourceDirectory>
+          <testSourceDirectory>census-field-service-cucumber/src/test/java</testSourceDirectory>
           <includes>
             <include>**/glue/*.java</include>
           </includes>

@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.steps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -18,6 +18,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.ons.ctp.common.util.Wait;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.WebDriverFactory;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.google.PasswordSSO;
@@ -178,7 +179,7 @@ public class TestSSOFieldService {
     // Perform the click operation that opens new window
     JavascriptExecutor jse = (JavascriptExecutor) driver;
     jse.executeScript("window.open()");
-    ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+    ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
     driver.switchTo().window(tabs.get(1));
     driver.get(accessEqUrl);
   }
