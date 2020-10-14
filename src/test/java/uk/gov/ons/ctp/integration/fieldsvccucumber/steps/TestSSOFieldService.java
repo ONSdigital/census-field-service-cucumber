@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.steps;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -6,11 +6,11 @@ import static org.junit.Assert.fail;
 
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
-import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.JavascriptExecutor;
@@ -18,7 +18,7 @@ import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.ons.ctp.common.util.Wait;
-import uk.gov.ons.ctp.integration.fieldsvccucumber.main.SpringIntegrationTest;
+import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.WebDriverFactory;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.InvalidCaseId;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.QuestionnaireCompleted;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.google.PasswordSSO;
@@ -26,7 +26,7 @@ import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.google.Us
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.samltest.SamlTestLogin;
 import uk.gov.ons.ctp.integration.fieldsvccucumber.selenium.pageobject.samltest.SamlTestUserInfo;
 
-public class TestSSOFieldService extends SpringIntegrationTest {
+public class TestSSOFieldService {
   private static final Logger log = LoggerFactory.getLogger(TestSSOFieldService.class);
   private WebDriver driver;
   private UsernameSSO userSso = null;
@@ -42,11 +42,11 @@ public class TestSSOFieldService extends SpringIntegrationTest {
   @Autowired private TestConfig testConfig;
   @Autowired private WebDriverFactory driverFactory;
 
-  private String accessEqPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
+  private final String accessEqPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147789ac";
   private String accessEqUrl = null;
-  private String completedPath = "/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
+  private final String completedPath = "/launch/03f58cb5-9af4-4d40-9d60-c124c5bddf09";
   private String completedUrl = null;
-  private String invalidCaseIdPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
+  private final String invalidCaseIdPath = "/launch/3305e937-6fb1-4ce1-9d4c-077f147799zz";
   private String invalidCaseIdUrl = null;
 
   private boolean useSamlTest = true;
@@ -179,7 +179,7 @@ public class TestSSOFieldService extends SpringIntegrationTest {
     // Perform the click operation that opens new window
     JavascriptExecutor jse = (JavascriptExecutor) driver;
     jse.executeScript("window.open()");
-    ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+    ArrayList<String> tabs = new ArrayList<>(driver.getWindowHandles());
     driver.switchTo().window(tabs.get(1));
     driver.get(accessEqUrl);
   }

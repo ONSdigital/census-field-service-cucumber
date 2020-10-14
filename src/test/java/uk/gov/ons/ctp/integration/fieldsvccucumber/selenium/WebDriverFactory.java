@@ -1,4 +1,4 @@
-package uk.gov.ons.ctp.integration.fieldsvccucumber.cucSteps.sso;
+package uk.gov.ons.ctp.integration.fieldsvccucumber.selenium;
 
 import com.godaddy.logging.Logger;
 import com.godaddy.logging.LoggerFactory;
@@ -37,7 +37,7 @@ public class WebDriverFactory {
   private final BlockingQueue<WebDriver> cachedWebDrivers =
       new ArrayBlockingQueue<>(DRIVER_POOL_SIZE);
 
-  private AtomicInteger driversQuitting = new AtomicInteger();
+  private final AtomicInteger driversQuitting = new AtomicInteger();
 
   public void closeWebDriver(WebDriver driver) {
     driversQuitting.incrementAndGet();
