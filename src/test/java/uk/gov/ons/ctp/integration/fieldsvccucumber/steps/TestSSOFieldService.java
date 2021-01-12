@@ -139,9 +139,7 @@ public class TestSSOFieldService {
       log.info("*******HERE IS THE PAGE SOURCE END********");
     }
     log.with(currentURL).info("The current URL to check");
-    log.info(
-        "We need to assert that it tried to open the EQ page but that page does not exist i.e. that the current URL contains both the word 'session' and the word 'token'");
-    assertTrue(currentURL.contains("session") && currentURL.contains("token"));
+    assertTrue(currentURL.contains("?token"));
   }
 
   private boolean isEqHostUrl(String url) {
