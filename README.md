@@ -3,15 +3,16 @@
 Cucumber acceptance tests for the Census Integration team's Field Service.
 
 The Field Service is designed to use the SAML authentication and authorisation to protect
-it primary endpoint, and the SAML IDP (Identity Provider) of choice is Google GSuite. 
+it primary endpoint, and the SAML IDP (Identity Provider) of choice is Google GSuite.
+
 
 For automated Cucumber tests in the GCP environment, Google GSuite IDP will present Captcha pages
-which makes the cucumber tests extremely difficult or impossible to write. For this reason, this 
+which makes the cucumber tests extremely difficult or impossible to write. For this reason, this
 project can be configured to run against an alternative IDP provider that does not present a Captcha challenge.
 
 ## Prerequisites
 
-* RabbitMQ must be running on port 35672. For running locally, see [RH Service README](https://github.com/ONSdigital/census-rh-service) for 
+* RabbitMQ must be running on port 35672. For running locally, see [RH Service README](https://github.com/ONSdigital/census-rh-service) for
   a description of how to get RabbitMQ running locally using `docker-compose`.
 * The [Mock Case API Service](https://github.com/ONSdigital/census-mock-case-api-service)  must be running.
 * The [Field Service](https://github.com/ONSdigital/census-field-service) must be running. See the README to ensure the selected profile,
