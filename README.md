@@ -2,6 +2,7 @@
 
 Cucumber acceptance tests for the Census Integration team's Field Service.
 
+
 The Field Service is designed to use the SAML authentication and authorisation to protect
 it primary endpoint, and the SAML IDP (Identity Provider) of choice is Google GSuite.
 
